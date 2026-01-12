@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CTA Button Styles */
+.cta-ripple {
+    background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 55%, #3b82f6 100%) !important;
+    box-shadow: 0 14px 38px rgba(14, 165, 233, 0.4) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.cta-ripple:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 18px 46px rgba(14, 165, 233, 0.5) !important;
+}
+
+/* Form Components - Force Styles */
+input[type="email"],
+input[type="password"],
+input[type="text"],
+select,
+textarea {
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+    font-size: 1rem !important;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #0ea5e9 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1) !important;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    border-color: #cbd5e1 !important;
+    accent-color: #0ea5e9 !important;
+}
+
+/* Label Styles */
+label {
+    color: #475569 !important;
+    font-weight: 500 !important;
+}
+
+/* Link Styles */
+a {
+    transition: all 0.2s ease !important;
+}
+
+a.text-sky-700:hover {
+    color: #0c5182 !important;
+}
+
+/* Card Styles */
+.card-shadow {
+    box-shadow: 0 25px 70px rgba(6, 95, 148, 0.15) !important;
+}
