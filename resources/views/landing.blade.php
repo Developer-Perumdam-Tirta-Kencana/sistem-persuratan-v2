@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tirta Kencana e-Surat</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .hero-gradient {
             background: radial-gradient(circle at 20% 20%, rgba(125, 249, 255, 0.35) 0%, rgba(14, 165, 233, 0.2) 22%, transparent 36%),
@@ -132,7 +132,12 @@
                                     <p class="text-xs uppercase tracking-wide text-sky-500">Dashboard Surat</p>
                                     <h3 class="text-2xl font-bold text-slate-800">Ringkasan Hari Ini</h3>
                                 </div>
-                                <span class="px-3 py-1 text-xs font-semibold bg-sky-100 text-sky-700 rounded-full">Live</span>
+                              <span
+                                    class="relative px-3 py-1 text-xs font-semibold text-sky-800 bg-sky-200
+                                        rounded-full animate-pulse
+                                        shadow-[0_0_12px_rgba(56,189,248,0.8)]">
+                                    Live
+                                </span>
                             </div>
                             <div class="grid grid-cols-3 gap-3 mb-6">
                                 <div class="bg-white rounded-xl p-4 shadow-sm border border-sky-50">
@@ -148,7 +153,7 @@
                                     <p class="text-2xl font-bold text-emerald-600">91%</p>
                                 </div>
                             </div>
-                            <div class="bg-gradient-to-r from-sky-600 to-cyan-600 rounded-xl p-6 text-white shadow-lg min-h-[140px]">
+                            <div class="hero-gradient rounded-xl p-6 text-white shadow-lg min-h-[140px]">
                                 <div class="flex items-start space-x-4">
                                     <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
                                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l9-4 9 4-9 4-9-4zm0 6l9 4 9-4m-9 4v6"/></svg>
