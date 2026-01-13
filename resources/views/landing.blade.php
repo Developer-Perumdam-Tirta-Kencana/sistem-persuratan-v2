@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tirta Kencana e-Surat</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php
+        $manifestPath = public_path('build/manifest.json');
+        $manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : [];
+    @endphp
+    @if (!empty($manifest['resources/css/app.css']['file'] ?? null))
+        <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+    @endif
+    @if (!empty($manifest['resources/js/app.js']['file'] ?? null))
+        <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}" defer></script>
+    @endif
     <style>
         .hero-gradient {
             background: radial-gradient(circle at 20% 20%, rgba(125, 249, 255, 0.35) 0%, rgba(14, 165, 233, 0.2) 22%, transparent 36%),
@@ -116,10 +125,30 @@
                             </a>
                         @endguest
                     </div>
-                    <div class="mt-10 flex flex-wrap gap-6 text-sm text-sky-50/90">
-                        <div class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-white"></span><span>Audit trail lengkap</span></div>
-                        <div class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-white"></span><span>Role admin, staff, user</span></div>
-                        <div class="flex items-center space-x-2"><span class="w-2 h-2 rounded-full bg-white"></span><span>Surat masuk/keluar terstruktur</span></div>
+                    <div class="mt-10 bg-white/15 backdrop-blur-md rounded-2xl border border-white/25 p-6 shadow-xl">
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div class="flex items-start space-x-3">
+                                <span class="w-3 h-3 rounded-full bg-emerald-300 flex-shrink-0 mt-1"></span>
+                                <div>
+                                    <p class="text-sm font-semibold text-white">Audit trail lengkap</p>
+                                    <p class="text-xs text-sky-100/80">Jejak lengkap setiap aksi</p>
+                                </div>
+                            </div>
+                            <!-- <div class="flex items-start space-x-3">
+                                <span class="w-3 h-3 rounded-full bg-cyan-300 flex-shrink-0 mt-1"></span>
+                                <div>
+                                    <p class="text-sm font-semibold text-white">Role admin, staff, user</p>
+                                    <p class="text-xs text-sky-100/80">Kontrol akses terukur</p>
+                                </div>
+                            </div> -->
+                            <div class="flex items-start space-x-3">
+                                <span class="w-3 h-3 rounded-full bg-blue-300 flex-shrink-0 mt-1"></span>
+                                <div>
+                                    <p class="text-sm font-semibold text-white">Surat masuk/keluar terstruktur</p>
+                                    <p class="text-xs text-sky-100/80">Alur formal & terintegrasi</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

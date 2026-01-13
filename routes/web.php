@@ -36,6 +36,7 @@ Route::get('/dashboard', function () {
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/user-management', [AdminDashboardController::class, 'userManagement'])->name('user-management');
 });
 
 // Staff Routes
