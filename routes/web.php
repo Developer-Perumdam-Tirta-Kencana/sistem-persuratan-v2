@@ -24,17 +24,21 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/dashboard', function () {
     $user = auth()->user();
     
-    if ($user->hasRole('admin')) {
+    if ($user->hasRole('manager')) {
         return redirect()->route('admin.dashboard');
     } elseif ($user->hasRole('staff')) {
         return redirect()->route('staff.dashboard');
+    } elseif ($user->hasRole('direksi')) {
+        return redirect()->route('direksi.dashboard');
+    } elseif ($user->hasRole('kepala_divisi')) {
+        return redirect()->route('kepala-divisi.dashboard');
     } else {
         return redirect()->route('user.dashboard');
     }
 })->middleware(['auth'])->name('dashboard');
 
 // Admin Routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:manager'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/user-management', [AdminDashboardController::class, 'userManagement'])->name('user-management');
 });
@@ -44,7 +48,17 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
     Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
 });
 
-// User Routes
+// Direksi Routes
+Route::middleware(['auth', 'role:direksi'])->prefix('direksi')->name('direksi.')->group(function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+});
+
+// Kepala Divisi Routes
+Route::middleware(['auth', 'role:kepala_divisi'])->prefix('kepala-divisi')->name('kepala-divisi.')->group(function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+});
+
+// Fallback user route (optional)
 Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });

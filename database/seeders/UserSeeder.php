@@ -17,35 +17,45 @@ class UserSeeder extends Seeder
     public function run()
     {
         // Get roles
-        $adminRole = Role::where('name', 'admin')->first();
+        $managerRole = Role::where('name', 'manager')->first();
         $staffRole = Role::where('name', 'staff')->first();
-        $userRole = Role::where('name', 'user')->first();
+        $direksiRole = Role::where('name', 'direksi')->first();
+        $kepalaDivisiRole = Role::where('name', 'kepala_divisi')->first();
 
-        // Create admin user
+        // Create manager user (dashboard admin)
         User::create([
-            'name' => 'Admin Tirta Kencana',
-            'email' => 'admin@tiirtakencana.local',
+            'name' => 'Manager Tirta Kencana',
+            'email' => 'manager@tiirtakencana.local',
             'password' => Hash::make('password123'),
             'email_verified_at' => now(),
-            'role_id' => $adminRole->id,
+            'role_id' => $managerRole->id,
         ]);
 
         // Create staff user
         User::create([
-            'name' => 'Pegawai PDAM',
+            'name' => 'Staff PDAM',
             'email' => 'staff@tiirtakencana.local',
             'password' => Hash::make('password123'),
             'email_verified_at' => now(),
             'role_id' => $staffRole->id,
         ]);
 
-        // Create regular user
+        // Create direksi user
         User::create([
-            'name' => 'Pengguna Biasa',
-            'email' => 'user@tiirtakencana.local',
+            'name' => 'Direksi PDAM',
+            'email' => 'direksi@tiirtakencana.local',
             'password' => Hash::make('password123'),
             'email_verified_at' => now(),
-            'role_id' => $userRole->id,
+            'role_id' => $direksiRole->id,
+        ]);
+
+        // Create kepala divisi user
+        User::create([
+            'name' => 'Kepala Divisi PDAM',
+            'email' => 'kepala.divisi@tiirtakencana.local',
+            'password' => Hash::make('password123'),
+            'email_verified_at' => now(),
+            'role_id' => $kepalaDivisiRole->id,
         ]);
     }
 }
