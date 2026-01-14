@@ -3,6 +3,14 @@
         "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-php8\" && npm install$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\\\\public\" && cp logo\\.png logo-old\\.png$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && powershell -Command \"Copy-Item 'c:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\copilot-\\*\\\\logo-\\*\\.png' -Destination 'public\\\\logo\\.png' -Force\" 2>&1 \\|\\| echo \"Manual image copy needed\"$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

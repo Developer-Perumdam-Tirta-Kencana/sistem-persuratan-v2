@@ -8,7 +8,7 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center space-x-6">
                 <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                    <div class="h-10 w-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-semibold">TK</div>
+                    <img src="{{ asset('logo.png') }}" alt="Tirta Kencana Logo" class="h-12 w-12 object-contain">
                     <div>
                         <p class="text-sm text-slate-500">Tirta Kencana</p>
                         <p class="text-base font-semibold text-slate-900">e-Surat Dashboard</p>
@@ -47,6 +47,12 @@
                             <p class="text-sm font-semibold text-slate-900">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-slate-500">{{ $roleLabel }}</p>
                         </div>
+                        <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                Profil Saya
+                            </div>
+                        </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"

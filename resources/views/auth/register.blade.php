@@ -21,7 +21,7 @@
             <div>
                 <div class="bg-white shadow-2xl border border-sky-100 rounded-2xl p-8">
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center text-sky-700 font-semibold">TK</div>
+                        <img src="{{ asset('logo.png') }}" alt="Tirta Kencana Logo" class="w-16 h-16 object-contain">
                         <div>
                             <p class="text-xs text-sky-700 uppercase tracking-wide font-semibold">Portal</p>
                             <h3 class="text-xl font-semibold text-slate-900">Registrasi e-Surat</h3>

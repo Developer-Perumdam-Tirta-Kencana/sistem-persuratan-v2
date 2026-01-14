@@ -74,9 +74,7 @@
 
                         <div>
                             <p class="text-xs uppercase text-gray-500 mb-2">Management User</p>
-                            <a href="{{ route('admin.user-management') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.user-management') ? 'bg-indigo-50 text-indigo-700 font-semibold' : '' }}">Persetujuan</a>
-                            <a href="{{ route('admin.user-management') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50">Kelola User</a>
-                            <a href="{{ route('admin.user-management') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50">Orang Ditugaskan</a>
+                            <a href="{{ route('admin.user-management') }}" class="block px-3 py-2 rounded-md hover:bg-gray-50 {{ request()->routeIs('admin.user-management') ? 'bg-indigo-50 text-indigo-700 font-semibold' : '' }}">Kelola User & Role</a>
                         </div>
                     </nav>
                 </aside>

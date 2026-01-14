@@ -39,11 +39,14 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Get staff role ID
+        $staffRole = \App\Models\Role::where('name', 'staff')->first();
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 3, // Default role: user
+            'role_id' => $staffRole ? $staffRole->id : 2, // Default role: staff (fallback to ID 2)
         ]);
 
         event(new Registered($user));
