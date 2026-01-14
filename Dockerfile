@@ -34,8 +34,8 @@ RUN --mount=type=cache,target=/tmp/composer-cache \
       --prefer-dist \
       --no-progress \
       --no-interaction \
+      --no-scripts \
       --optimize-autoloader
-
 
 # ========= 3) FINAL APP IMAGE =========
 FROM php:7.4-cli-alpine AS app
