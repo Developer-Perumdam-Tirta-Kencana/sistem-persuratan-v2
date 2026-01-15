@@ -57,7 +57,6 @@ Route::middleware(['auth', 'role:manager'])->prefix('admin')->name('admin.')->gr
     Route::put('/user-management/{user}', [UserManagementController::class, 'update'])->name('user-management.update');
     Route::delete('/user-management/{user}', [UserManagementController::class, 'destroy'])->name('user-management.destroy');
     Route::patch('/user-management/{user}/role', [UserManagementController::class, 'updateRole'])->name('user-management.update-role');
-    Route::post('/user-management/{user}/approve', [UserManagementController::class, 'approve'])->name('user-management.approve');
 });
 
 // Staff Routes

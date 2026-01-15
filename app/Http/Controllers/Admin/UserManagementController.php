@@ -116,16 +116,4 @@ class UserManagementController extends Controller
         ]);
     }
 
-    /**
-     * Approve user (if needed for approval flow)
-     */
-    public function approve(User $user)
-    {
-        $user->update([
-            'email_verified_at' => now(),
-        ]);
-
-        return redirect()->route('admin.user-management')
-            ->with('success', 'User berhasil disetujui!');
-    }
 }
