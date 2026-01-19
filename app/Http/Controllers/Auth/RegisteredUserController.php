@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\SystemSetting;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -20,6 +21,12 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
+        // Check if registration is enabled
+        if (!SystemSetting::isRegistrationEnabled()) {
+            return redirect()->route('login')
+                ->with('error', 'Registrasi saat ini tidak tersedia. Silakan hubungi administrator.');
+        }
+
         return view('auth.register');
     }
 
@@ -33,6 +40,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if registration is enabled
+        if (!SystemSetting::isRegistrationEnabled()) {
+            return redirect()->route('login')
+                ->with('error', 'Registrasi saat ini tidak tersedia. Silakan hubungi administrator.');
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],

@@ -63,135 +63,63 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
-                                Surat Keluar
+                                Modul Surat
                             </p>
                             <div class="space-y-1">
-                                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1">
+                                <a href="{{ route('surat-keluar.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('surat-keluar.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
-                                    Semua Template
+                                    Surat Keluar
                                 </a>
-                                <button onclick="toggleSubmenu('info')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <span class="font-semibold">Informasi</span>
-                                    </div>
-                                    <svg id="info-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                <a href="{{ route('informasi.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('informasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                </button>
-                                <div id="info-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Informasi</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('payroll')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <span class="font-semibold">Payroll</span>
-                                    </div>
-                                    <svg id="payroll-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Informasi
+                                </a>
+                                <a href="{{ route('payroll.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('payroll.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                </button>
-                                <div id="payroll-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Payroll BR</a>
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Payroll II</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('pembayaran')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                                        </svg>
-                                        <span class="font-semibold">Pembayaran</span>
-                                    </div>
-                                    <svg id="pembayaran-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Payroll
+                                </a>
+                                <a href="{{ route('pembayaran.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('pembayaran.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                                     </svg>
-                                </button>
-                                <div id="pembayaran-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Pembayaran</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('pemberitahuan')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                                        </svg>
-                                        <span class="font-semibold">Pemberitahuan</span>
-                                    </div>
-                                    <svg id="pemberitahuan-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Pembayaran
+                                </a>
+                                <a href="{{ route('pemberitahuan.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('pemberitahuan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                                     </svg>
-                                </button>
-                                <div id="pemberitahuan-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Pemberitahuan</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('permohonan')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
-                                        </svg>
-                                        <span class="font-semibold">Permohonan</span>
-                                    </div>
-                                    <svg id="permohonan-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Pemberitahuan
+                                </a>
+                                <a href="{{ route('permohonan.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('permohonan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                                     </svg>
-                                </button>
-                                <div id="permohonan-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Permohonan</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('rekomendasi')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <span class="font-semibold">Rekomendasi</span>
-                                    </div>
-                                    <svg id="rekomendasi-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Permohonan
+                                </a>
+                                <a href="{{ route('rekomendasi.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('rekomendasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                </button>
-                                <div id="rekomendasi-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Rekomendasi</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('tugas')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
-                                        <span class="font-semibold">Surat Tugas</span>
-                                    </div>
-                                    <svg id="tugas-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Rekomendasi
+                                </a>
+                                <a href="{{ route('surat-tugas.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('surat-tugas.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                     </svg>
-                                </button>
-                                <div id="tugas-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Tugas</a>
-                                </div>
-
-                                <button onclick="toggleSubmenu('undangan')" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-                                    <div class="flex items-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        <span class="font-semibold">Undangan</span>
-                                    </div>
-                                    <svg id="undangan-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    Surat Tugas
+                                </a>
+                                <a href="{{ route('undangan.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('undangan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                </button>
-                                <div id="undangan-submenu" class="hidden pl-10 space-y-1 animate-slideDown">
-                                    <a href="#" class="block py-1.5 text-gray-600 hover:text-indigo-600 transition-colors">Template Surat Undangan</a>
-                                </div>
+                                    Undangan
+                                </a>
                             </div>
                         </div>
 
@@ -420,20 +348,6 @@
 
         if (sidebarOverlay) {
             sidebarOverlay.addEventListener('click', closeSidebarMenu);
-        }
-
-        // Toggle submenu
-        function toggleSubmenu(menuId) {
-            const submenu = document.getElementById(menuId + '-submenu');
-            const icon = document.getElementById(menuId + '-icon');
-            
-            if (submenu.classList.contains('hidden')) {
-                submenu.classList.remove('hidden');
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                submenu.classList.add('hidden');
-                icon.style.transform = 'rotate(0deg)';
-            }
         }
 
         // Close sidebar when clicking on a link (mobile)

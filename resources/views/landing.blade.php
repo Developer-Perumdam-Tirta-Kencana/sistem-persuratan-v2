@@ -177,7 +177,9 @@
                         <a href="{{ route('dashboard') }}" class="text-slate-700 hover:text-sky-700 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class=" text-slate-700 hover:text-sky-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                                                @if(\App\Models\SystemSetting::isRegistrationEnabled())
                         <a href="{{ route('register') }}" class="hero-gradient text-white hover:bg-sky-700 px-4 py-2 rounded-md text-sm font-medium">Register</a>
+                                            @endif
                     @endauth
                 </div>
             </div>
@@ -209,9 +211,11 @@
                     </p>
                     <div class="flex flex-wrap items-center gap-4">
                         @guest
+                                                        @if(\App\Models\SystemSetting::isRegistrationEnabled())
                             <a href="{{ route('register') }}" class="cta-ripple text-white px-8 py-3 rounded-lg text-lg font-semibold">
                                 Mulai Sekarang
                             </a>
+                                                        @endif
                             <a href="{{ route('login') }}" class="bg-white/90 text-sky-800 hover:bg-white px-8 py-3 rounded-lg text-lg font-semibold shadow-lg transition duration-300">
                                 Login
                             </a>
@@ -493,9 +497,11 @@
             <div class="text-center text-white">
                 <h2 class="text-4xl font-bold mb-4 text-3d">Siap jalankan tata kelola surat formal?</h2>
                 <p class="text-xl text-sky-100 mb-10 max-w-2xl mx-auto">Aktifkan e-Surat Tirta Kencana dan pastikan setiap dokumen mengalir rapi.</p>
+                                    @if(\App\Models\SystemSetting::isRegistrationEnabled())
                 @guest
                     <a href="{{ route('register') }}" class="scale-bounce bg-white text-sky-800 hover:bg-slate-100 px-10 py-4 rounded-xl text-lg font-bold shadow-2xl transition duration-300 inline-block hover:scale-105">
                         Daftar Sekarang →
+                                        @endif
                     </a>
                 @endguest
             </div>

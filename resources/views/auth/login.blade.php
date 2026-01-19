@@ -36,6 +36,13 @@
                     <!-- Session Status -->
                     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+                    <!-- Error Messages -->
+                    @if (session('error'))
+                        <div class="mb-4 bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-lg">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
@@ -71,10 +78,12 @@
                             </button>
                         </div>
 
+                        @if(\App\Models\SystemSetting::isRegistrationEnabled())
                         <div class="text-sm text-center text-slate-700">
                             Belum punya akun?
                             <a href="{{ route('register') }}" class="text-sky-700 hover:text-sky-900 font-semibold">Daftar sekarang</a>
                         </div>
+                        @endif
                     </form>
                 </div>
             </div>

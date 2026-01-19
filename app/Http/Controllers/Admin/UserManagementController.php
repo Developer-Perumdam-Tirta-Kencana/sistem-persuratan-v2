@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -19,8 +20,9 @@ class UserManagementController extends Controller
         $users = User::with('role')->paginate(20);
         $roles = Role::all();
         $totalUsers = User::count();
+        $registrationEnabled = SystemSetting::isRegistrationEnabled();
         
-        return view('admin.user-management', compact('users', 'roles', 'totalUsers'));
+        return view('admin.user-management', compact('users', 'roles', 'totalUsers', 'registrationEnabled'));
     }
 
     /**
@@ -113,6 +115,21 @@ class UserManagementController extends Controller
             'success' => true,
             'message' => 'Role berhasil diperbarui!',
             'role' => $user->role->name
+        ]);
+    }
+
+    /**
+     * Toggle registration status
+     */
+    public function toggleRegistration(Request $request)
+    {
+        $enabled = $request->input('enabled', false);
+        SystemSetting::set('registration_enabled', $enabled ? '1' : '0');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status registrasi berhasil diperbarui!',
+            'enabled' => (bool) $enabled
         ]);
     }
 

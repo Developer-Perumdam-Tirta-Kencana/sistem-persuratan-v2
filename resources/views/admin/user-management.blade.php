@@ -66,6 +66,32 @@
             </div>
 
             <!-- Main Content -->
+            <div class="bg-white shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Status Registrasi Publik</h3>
+                            <p class="text-sm text-gray-500">Aktifkan atau nonaktifkan menu registrasi untuk pengguna baru</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span id="registrationStatusText" class="text-sm font-medium {{ $registrationEnabled ? 'text-emerald-600' : 'text-rose-600' }}">
+                                {{ $registrationEnabled ? 'Aktif' : 'Nonaktif' }}
+                            </span>
+                            <button 
+                                id="registrationToggle"
+                                onclick="toggleRegistration()"
+                                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 {{ $registrationEnabled ? 'bg-indigo-600' : 'bg-gray-200' }}"
+                                role="switch"
+                                aria-checked="{{ $registrationEnabled ? 'true' : 'false' }}"
+                                data-enabled="{{ $registrationEnabled ? '1' : '0' }}">
+                                <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {{ $registrationEnabled ? 'translate-x-6' : 'translate-x-1' }}" id="toggleCircle"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User List -->
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200 flex items-center justify-between">
                     <div>
@@ -307,6 +333,63 @@
                 console.error('Error:', error);
                 alert('Terjadi kesalahan saat mengupdate role');
                 location.reload();
+            });
+        }
+
+        function toggleRegistration() {
+            const toggle = document.getElementById('registrationToggle');
+            const circle = document.getElementById('toggleCircle');
+            const statusText = document.getElementById('registrationStatusText');
+            const currentStatus = toggle.getAttribute('data-enabled') === '1';
+            const newStatus = !currentStatus;
+
+            fetch('{{ route('admin.user-management.toggle-registration') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ enabled: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update UI
+                    toggle.setAttribute('data-enabled', newStatus ? '1' : '0');
+                    toggle.setAttribute('aria-checked', newStatus ? 'true' : 'false');
+                    
+                    if (newStatus) {
+                        toggle.classList.remove('bg-gray-200');
+                        toggle.classList.add('bg-indigo-600');
+                        circle.classList.remove('translate-x-1');
+                        circle.classList.add('translate-x-6');
+                        statusText.textContent = 'Aktif';
+                        statusText.classList.remove('text-rose-600');
+                        statusText.classList.add('text-emerald-600');
+                    } else {
+                        toggle.classList.remove('bg-indigo-600');
+                        toggle.classList.add('bg-gray-200');
+                        circle.classList.remove('translate-x-6');
+                        circle.classList.add('translate-x-1');
+                        statusText.textContent = 'Nonaktif';
+                        statusText.classList.remove('text-emerald-600');
+                        statusText.classList.add('text-rose-600');
+                    }
+
+                    // Show success message
+                    const message = document.createElement('div');
+                    message.className = 'fixed top-4 right-4 bg-emerald-50 border border-emerald-200 text-emerald-800 px-6 py-3 rounded-lg shadow-lg z-50';
+                    message.textContent = data.message;
+                    document.body.appendChild(message);
+
+                    setTimeout(() => {
+                        message.remove();
+                    }, 3000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengupdate status registrasi');
             });
         }
 

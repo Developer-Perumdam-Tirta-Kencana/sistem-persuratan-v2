@@ -11,6 +11,34 @@
         "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && powershell -Command \"Copy-Item 'c:\\\\Users\\\\USER\\\\AppData\\\\Local\\\\Temp\\\\copilot-\\*\\\\logo-\\*\\.png' -Destination 'public\\\\logo\\.png' -Force\" 2>&1 \\|\\| echo \"Manual image copy needed\"$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan make:migration create_system_settings_table$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan serve$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:list \\| find \"toggle\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:list --name=toggle$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:clear$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan make:controller SuratKeluarController && php artisan make:model SuratKeluar -m$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:clear && php artisan cache:clear$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }
