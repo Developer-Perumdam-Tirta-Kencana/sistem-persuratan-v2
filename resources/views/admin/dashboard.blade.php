@@ -1,30 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Admin Dashboard</h2>
-                <p class="text-sm text-gray-500">Ringkasan aktivitas dan navigasi cepat</p>
-            </div>
             <div class="flex items-center gap-3">
-                <button id="toggleSidebar" class="lg:hidden text-gray-600 hover:text-indigo-600 transition-colors">
+                <button id="toggleSidebar" class="lg:hidden text-gray-600 hover:text-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg p-1" aria-label="Toggle Sidebar">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
-                <a href="{{ route('admin.user-management') }}" class="text-sm text-indigo-600 hover:text-indigo-700 transition-colors">Kelola User</a>
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Admin Dashboard</h2>
+                    <p class="text-sm text-gray-500 hidden sm:block">Ringkasan aktivitas dan navigasi cepat</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.user-management') }}" class="text-sm text-indigo-600 hover:text-indigo-700 transition-colors hidden sm:inline">Kelola User</a>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-6 lg:py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Mobile Sidebar Overlay -->
-            <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity duration-300"></div>
+            <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity duration-300 opacity-0 pointer-events-none" aria-hidden="true"></div>
             
             <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 relative">
-                <aside id="sidebar" class="fixed lg:relative top-0 left-0 h-screen lg:h-auto z-50 lg:z-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-xl lg:shadow-sm rounded-none lg:rounded-lg p-5 w-[280px] overflow-y-auto lg:sticky lg:top-20 lg:self-start max-h-screen">
+                <aside id="sidebar" class="fixed lg:relative top-0 left-0 h-full lg:h-auto z-50 lg:z-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-2xl lg:shadow-sm rounded-none lg:rounded-lg p-5 w-[280px] sm:w-[320px] lg:w-[280px] overflow-y-auto lg:sticky lg:top-20 lg:self-start max-h-screen" role="dialog" aria-label="Navigation sidebar">
                     <!-- Close button for mobile -->
-                    <button id="closeSidebar" class="lg:hidden absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                    <button id="closeSidebar" class="lg:hidden absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg p-1" aria-label="Close Sidebar">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
@@ -50,11 +52,11 @@
                                 </svg>
                                 Utama
                             </p>
-                            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-sm' : 'hover:bg-gray-50 hover:translate-x-1' }}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 touch-manipulation {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-sm' : 'hover:bg-gray-50 hover:translate-x-1' }}">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                                 </svg>
-                                Dashboard
+                                <span class="text-sm sm:text-base">Dashboard</span>
                             </a>
                         </div>
 
@@ -66,59 +68,59 @@
                                 Modul Surat
                             </p>
                             <div class="space-y-1">
-                                <a href="{{ route('surat-keluar.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('surat-keluar.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('surat-keluar.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('surat-keluar.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
-                                    Surat Keluar
+                                    <span class="text-sm">Surat Keluar</span>
                                 </a>
-                                <a href="{{ route('informasi.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('informasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('informasi.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('informasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    Informasi
+                                    <span class="text-sm">Informasi</span>
                                 </a>
-                                <a href="{{ route('payroll.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('payroll.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('payroll.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('payroll.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    Payroll
+                                    <span class="text-sm">Payroll</span>
                                 </a>
-                                <a href="{{ route('pembayaran.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('pembayaran.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('pembayaran.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('pembayaran.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                                     </svg>
-                                    Pembayaran
+                                    <span class="text-sm">Pembayaran</span>
                                 </a>
-                                <a href="{{ route('pemberitahuan.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('pemberitahuan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('pemberitahuan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('pemberitahuan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                                     </svg>
-                                    Pemberitahuan
+                                    <span class="text-sm">Pemberitahuan</span>
                                 </a>
-                                <a href="{{ route('permohonan.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('permohonan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('permohonan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('permohonan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                                     </svg>
-                                    Permohonan
+                                    <span class="text-sm">Permohonan</span>
                                 </a>
-                                <a href="{{ route('rekomendasi.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('rekomendasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('rekomendasi.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('rekomendasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    Rekomendasi
+                                    <span class="text-sm">Rekomendasi</span>
                                 </a>
-                                <a href="{{ route('surat-tugas.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('surat-tugas.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('surat-tugas.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('surat-tugas.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                     </svg>
-                                    Surat Tugas
+                                    <span class="text-sm">Surat Tugas</span>
                                 </a>
-                                <a href="{{ route('undangan.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 {{ request()->routeIs('undangan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <a href="{{ route('undangan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('undangan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                    Undangan
+                                    <span class="text-sm">Undangan</span>
                                 </a>
                             </div>
                         </div>
@@ -130,11 +132,11 @@
                                 </svg>
                                 Surat Masuk
                             </p>
-                            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                 </svg>
-                                Daftar Surat Masuk
+                                <span class="text-sm sm:text-base">Daftar Surat Masuk</span>
                             </a>
                         </div>
 
@@ -145,12 +147,12 @@
                                 </svg>
                                 Management User
                             </p>
-                            <a href="{{ route('admin.user-management') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 {{ request()->routeIs('admin.user-management') ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-sm' : 'hover:bg-gray-50 hover:translate-x-1' }}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href="{{ route('admin.user-management') }}" class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 touch-manipulation {{ request()->routeIs('admin.user-management') ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-sm' : 'hover:bg-gray-50 hover:translate-x-1' }}">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                Kelola User & Role
+                                <span class="text-sm sm:text-base">Kelola User & Role</span>
                             </a>
                         </div>
                     </nav>
@@ -304,11 +306,57 @@
         /* Prevent body scroll when sidebar is open on mobile */
         body.sidebar-open {
             overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
         }
 
         @media (min-width: 1024px) {
             body.sidebar-open {
                 overflow: auto;
+                position: static;
+                width: auto;
+                height: auto;
+            }
+        }
+
+        /* Sidebar improvements */
+        #sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+        }
+
+        #sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 3px;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 0.7);
+        }
+
+        /* Overlay transitions */
+        #sidebarOverlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #sidebarOverlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Touch optimization for mobile */
+        @media (max-width: 1023px) {
+            .touch-manipulation {
+                -webkit-tap-highlight-color: rgba(99, 102, 241, 0.1);
             }
         }
     </style>
@@ -321,36 +369,57 @@
         const closeSidebar = document.getElementById('closeSidebar');
 
         // Initialize: Ensure sidebar is closed on mobile by default
-        if (window.innerWidth < 1024) {
-            sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
+        function initSidebar() {
+            if (window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.remove('active');
+                document.body.classList.remove('sidebar-open');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('active');
+                document.body.classList.remove('sidebar-open');
+            }
         }
 
         function openSidebar() {
             sidebar.classList.remove('-translate-x-full');
-            sidebarOverlay.classList.remove('hidden');
+            // Use setTimeout to ensure the transition happens
+            setTimeout(() => {
+                sidebarOverlay.classList.add('active');
+            }, 10);
             document.body.classList.add('sidebar-open');
+            // Set focus to close button for accessibility
+            if (closeSidebar) {
+                closeSidebar.focus();
+            }
         }
 
         function closeSidebarMenu() {
             sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
+            sidebarOverlay.classList.remove('active');
             document.body.classList.remove('sidebar-open');
         }
 
+        // Event listeners
         if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', openSidebar);
+            toggleSidebar.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openSidebar();
+            });
         }
 
         if (closeSidebar) {
-            closeSidebar.addEventListener('click', closeSidebarMenu);
+            closeSidebar.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeSidebarMenu();
+            });
         }
 
         if (sidebarOverlay) {
             sidebarOverlay.addEventListener('click', closeSidebarMenu);
         }
 
-        // Close sidebar when clicking on a link (mobile)
+        // Close sidebar when clicking on a link (mobile only)
         document.querySelectorAll('#sidebar a').forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth < 1024) {
@@ -359,11 +428,48 @@
             });
         });
 
-        // Close sidebar on window resize
+        // Handle window resize
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024) {
-                closeSidebarMenu();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                initSidebar();
+            }, 250);
+        });
+
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && window.innerWidth < 1024) {
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    closeSidebarMenu();
+                }
             }
         });
+
+        // Prevent scrolling on touch devices when sidebar is open
+        let touchStartY = 0;
+        
+        if (sidebar) {
+            sidebar.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            sidebar.addEventListener('touchmove', (e) => {
+                const sidebar = e.currentTarget;
+                const scrollTop = sidebar.scrollTop;
+                const scrollHeight = sidebar.scrollHeight;
+                const height = sidebar.clientHeight;
+                const deltaY = e.touches[0].clientY - touchStartY;
+
+                // Prevent overscroll bounce
+                if ((scrollTop === 0 && deltaY > 0) || 
+                    (scrollTop + height >= scrollHeight && deltaY < 0)) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        }
+
+        // Initialize on page load
+        initSidebar();
     </script>
 </x-app-layout>

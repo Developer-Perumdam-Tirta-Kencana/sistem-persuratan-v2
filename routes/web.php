@@ -16,6 +16,14 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\PayrollLetterController;
+use App\Http\Controllers\JobNotificationLetterController;
+use App\Http\Controllers\WaterAvailabilityLetterController;
+use App\Http\Controllers\RecommendationLetterController;
+use App\Http\Controllers\TaskOrderLetterController;
+use App\Http\Controllers\DelegationLetterController;
+use App\Http\Controllers\InternalTransferLetterController;
+use App\Http\Controllers\InternshipPermissionLetterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +67,16 @@ Route::middleware(['auth'])->group(function () {
 // Surat Keluar Routes
 Route::middleware(['auth'])->group(function () {
     Route::resource('surat-keluar', SuratKeluarController::class);
+    
+    // Template Surat Routes
+    Route::resource('payroll-letters', PayrollLetterController::class);
+    Route::resource('job-notification-letters', JobNotificationLetterController::class);
+    Route::resource('water-availability-letters', WaterAvailabilityLetterController::class);
+    Route::resource('recommendation-letters', RecommendationLetterController::class);
+    Route::resource('task-order-letters', TaskOrderLetterController::class);
+    Route::resource('delegation-letters', DelegationLetterController::class);
+    Route::resource('internal-transfer-letters', InternalTransferLetterController::class);
+    Route::resource('internship-permission-letters', InternshipPermissionLetterController::class);
 });
 
 // Fitur Tambahan Routes
