@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\SuratKeluar;
+use App\Models\PayrollLetter;
+use App\Models\JobNotificationLetter;
+use App\Models\WaterAvailabilityLetter;
+use App\Models\RecommendationLetter;
+use App\Models\TaskOrderLetter;
+use App\Models\DelegationLetter;
+use App\Models\InternalTransferLetter;
+use App\Models\InternshipPermissionLetter;
 use Illuminate\Http\Request;
 
 class SuratKeluarController extends Controller
@@ -14,10 +22,25 @@ class SuratKeluarController extends Controller
      */
     public function index()
     {
-        $suratKeluar = SuratKeluar::latest()->paginate(20);
-        $totalSuratKeluar = SuratKeluar::count();
+        $payrollCount = PayrollLetter::count();
+        $jobNotificationCount = JobNotificationLetter::count();
+        $waterAvailabilityCount = WaterAvailabilityLetter::count();
+        $recommendationCount = RecommendationLetter::count();
+        $taskOrderCount = TaskOrderLetter::count();
+        $delegationCount = DelegationLetter::count();
+        $internalTransferCount = InternalTransferLetter::count();
+        $internshipCount = InternshipPermissionLetter::count();
         
-        return view('surat-keluar.index', compact('suratKeluar', 'totalSuratKeluar'));
+        return view('surat-keluar.index', compact(
+            'payrollCount',
+            'jobNotificationCount',
+            'waterAvailabilityCount',
+            'recommendationCount',
+            'taskOrderCount',
+            'delegationCount',
+            'internalTransferCount',
+            'internshipCount'
+        ));
     }
 
     /**

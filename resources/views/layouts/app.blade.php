@@ -14,6 +14,11 @@
         <!-- Alpine (CDN) -->
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+        <!-- DataTables CSS & JS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
         <!-- Styles & Scripts (Vite build fallback for Laravel 8) -->
         @php
             $manifestPath = public_path('build/manifest.json');

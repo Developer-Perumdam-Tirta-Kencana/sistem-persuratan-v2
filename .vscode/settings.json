@@ -39,6 +39,10 @@
         "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:clear && php artisan cache:clear$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan tinker --execute=\"echo 'Aplikasi berhasil dijalankan';\"$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }
