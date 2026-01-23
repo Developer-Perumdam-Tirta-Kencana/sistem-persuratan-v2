@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DelegationLetter;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DelegationLetterController extends Controller
 {
@@ -70,5 +71,22 @@ class DelegationLetterController extends Controller
 
         return redirect()->route('delegation-letters.index')
             ->with('success', 'Surat Kuasa Pelimpahan berhasil dihapus.');
+    }
+
+    public function exportPdf(DelegationLetter $delegationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $delegationLetter->load(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa']);
+        
+        $pdf = Pdf::loadView('delegation-letters.pdf', [
+            'letter' => $delegationLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Kuasa_Pelimpahan_' . date('Y-m-d') . '.pdf';
+        return $pdf->download($filename);
     }
 }

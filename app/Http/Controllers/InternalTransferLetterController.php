@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InternalTransferLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InternalTransferLetterController extends Controller
 {
@@ -66,5 +67,20 @@ class InternalTransferLetterController extends Controller
 
         return redirect()->route('internal-transfer-letters.index')
             ->with('success', 'Surat Pelimpahan Rekening berhasil dihapus.');
+    }
+
+    public function exportPdf(InternalTransferLetter $internalTransferLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('internal-transfer-letters.pdf', [
+            'letter' => $internalTransferLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Pelimpahan_Rekening_' . date('Y-m-d') . '.pdf';
+        return $pdf->download($filename);
     }
 }

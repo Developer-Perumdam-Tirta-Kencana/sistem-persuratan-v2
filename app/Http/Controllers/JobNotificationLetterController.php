@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JobNotificationLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class JobNotificationLetterController extends Controller
 {
@@ -68,5 +69,20 @@ class JobNotificationLetterController extends Controller
 
         return redirect()->route('job-notification-letters.index')
             ->with('success', 'Surat Pemberitahuan Pekerjaan berhasil dihapus.');
+    }
+
+    public function exportPdf(JobNotificationLetter $jobNotificationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('job-notification-letters.pdf', [
+            'letter' => $jobNotificationLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Pemberitahuan_Pekerjaan_' . date('Y-m-d') . '.pdf';
+        return $pdf->download($filename);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskOrderLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TaskOrderLetterController extends Controller
 {
@@ -72,5 +73,20 @@ class TaskOrderLetterController extends Controller
 
         return redirect()->route('task-order-letters.index')
             ->with('success', 'Surat Perintah Tugas berhasil dihapus.');
+    }
+
+    public function exportPdf(TaskOrderLetter $taskOrderLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('task-order-letters.pdf', [
+            'letter' => $taskOrderLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Perintah_Tugas_' . date('Y-m-d') . '.pdf';
+        return $pdf->download($filename);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InternshipPermissionLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InternshipPermissionLetterController extends Controller
 {
@@ -72,5 +73,20 @@ class InternshipPermissionLetterController extends Controller
 
         return redirect()->route('internship-permission-letters.index')
             ->with('success', 'Surat Izin Magang/PKL berhasil dihapus.');
+    }
+
+    public function exportPdf(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('internship-permission-letters.pdf', [
+            'letter' => $internshipPermissionLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Izin_Magang_' . date('Y-m-d') . '.pdf';
+        return $pdf->download($filename);
     }
 }

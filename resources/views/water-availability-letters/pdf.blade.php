@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Surat Informasi Ketersediaan Air</title>
+    <style>
+        @page {
+            margin: 2cm 2cm 2cm 2cm;
+        }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #000;
+        }
+        .kop-surat {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .kop-surat img {
+            max-width: 100%;
+            height: auto;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .title {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: underline;
+            margin: 20px 0;
+            font-size: 14pt;
+        }
+        .nomor {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .body-text {
+            text-align: justify;
+            margin: 15px 0;
+        }
+        .indent {
+            margin-left: 40px;
+        }
+        .details {
+            margin: 20px 0 20px 40px;
+        }
+        .details-row {
+            margin: 5px 0;
+        }
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+        }
+        .signature-space {
+            margin-top: 60px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .no-border td {
+            border: none;
+            padding: 5px 0;
+            vertical-align: top;
+        }
+        .label {
+            width: 200px;
+        }
+        .status-badge {
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .status-tersedia {
+            color: #059669;
+            background-color: #d1fae5;
+        }
+        .status-tidak-tersedia {
+            color: #dc2626;
+            background-color: #fee2e2;
+        }
+    </style>
+</head>
+<body>
+    @if($withKop)
+    <div class="kop-surat">
+        <img src="{{ public_path('kop.png') }}" alt="Kop Surat">
+    </div>
+    @endif
+
+    <div class="content">
+        <div class="title">
+            SURAT INFORMASI KETERSEDIAAN AIR
+        </div>
+
+        <div class="body-text">
+            <p>Sehubungan dengan surat permohonan dari:</p>
+            
+            <div class="details">
+                <table class="no-border">
+                    <tr>
+                        <td class="label">Nomor Surat Masuk</td>
+                        <td>:</td>
+                        <td>{{ $letter->nomor_surat_masuk }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tanggal Surat Masuk</td>
+                        <td>:</td>
+                        <td>{{ \Carbon\Carbon::parse($letter->tanggal_surat_masuk)->translatedFormat('d F Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Nama Pengembang</td>
+                        <td>:</td>
+                        <td><strong>{{ $letter->nama_pengembang }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Nama Proyek</td>
+                        <td>:</td>
+                        <td><strong>{{ $letter->nama_proyek }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Alamat Proyek</td>
+                        <td>:</td>
+                        <td>{{ $letter->alamat_proyek }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>Dengan ini kami sampaikan informasi bahwa:</p>
+
+            <div class="details">
+                <p>
+                    <strong>Status Ketersediaan Air: </strong>
+                    <span class="status-badge {{ $letter->status_ketersediaan ? 'status-tersedia' : 'status-tidak-tersedia' }}">
+                        {{ $letter->status_ketersediaan ? 'TERSEDIA' : 'TIDAK TERSEDIA' }}
+                    </span>
+                </p>
+            </div>
+
+            @if($letter->status_ketersediaan)
+            <p>
+                PDAM Tirta Kencana Kabupaten Nganjuk dapat melayani kebutuhan air bersih untuk proyek yang dimaksud. 
+                Untuk proses lebih lanjut, pengembang dapat menghubungi bagian pelayanan pelanggan kami.
+            </p>
+            @else
+            <p>
+                PDAM Tirta Kencana Kabupaten Nganjuk untuk saat ini belum dapat melayani kebutuhan air bersih untuk lokasi proyek yang dimaksud. 
+                Hal ini dikarenakan infrastruktur jaringan distribusi belum tersedia di area tersebut.
+            </p>
+            @endif
+
+            <p>Demikian surat informasi ini kami sampaikan. Atas perhatiannya, kami ucapkan terima kasih.</p>
+        </div>
+
+        <div class="signature">
+            <p>Nganjuk, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p>Hormat Kami,</p>
+            <p><strong>PDAM Tirta Kencana</strong></p>
+            <p><strong>Kabupaten Nganjuk</strong></p>
+            <div class="signature-space"></div>
+            <p><strong>Direktur Utama</strong></p>
+        </div>
+    </div>
+</body>
+</html>

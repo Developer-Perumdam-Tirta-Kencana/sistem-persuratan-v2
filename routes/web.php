@@ -62,13 +62,28 @@ Route::middleware(['auth'])->group(function () {
     
     // Template Surat Routes
     Route::resource('payroll-letters', PayrollLetterController::class);
+    Route::get('payroll-letters/{payrollLetter}/export-pdf', [PayrollLetterController::class, 'exportPdf'])->name('payroll-letters.export-pdf');
+    
     Route::resource('job-notification-letters', JobNotificationLetterController::class);
+    Route::get('job-notification-letters/{jobNotificationLetter}/export-pdf', [JobNotificationLetterController::class, 'exportPdf'])->name('job-notification-letters.export-pdf');
+    
     Route::resource('water-availability-letters', WaterAvailabilityLetterController::class);
+    Route::get('water-availability-letters/{waterAvailabilityLetter}/export-pdf', [WaterAvailabilityLetterController::class, 'exportPdf'])->name('water-availability-letters.export-pdf');
+    
     Route::resource('recommendation-letters', RecommendationLetterController::class);
+    Route::get('recommendation-letters/{recommendationLetter}/export-pdf', [RecommendationLetterController::class, 'exportPdf'])->name('recommendation-letters.export-pdf');
+    
     Route::resource('task-order-letters', TaskOrderLetterController::class);
+    Route::get('task-order-letters/{taskOrderLetter}/export-pdf', [TaskOrderLetterController::class, 'exportPdf'])->name('task-order-letters.export-pdf');
+    
     Route::resource('delegation-letters', DelegationLetterController::class);
+    Route::get('delegation-letters/{delegationLetter}/export-pdf', [DelegationLetterController::class, 'exportPdf'])->name('delegation-letters.export-pdf');
+    
     Route::resource('internal-transfer-letters', InternalTransferLetterController::class);
+    Route::get('internal-transfer-letters/{internalTransferLetter}/export-pdf', [InternalTransferLetterController::class, 'exportPdf'])->name('internal-transfer-letters.export-pdf');
+    
     Route::resource('internship-permission-letters', InternshipPermissionLetterController::class);
+    Route::get('internship-permission-letters/{internshipPermissionLetter}/export-pdf', [InternshipPermissionLetterController::class, 'exportPdf'])->name('internship-permission-letters.export-pdf');
 });
 
 // Fitur Tambahan Routes - DIHAPUS (gunakan template letters route yang sudah ada di atas)

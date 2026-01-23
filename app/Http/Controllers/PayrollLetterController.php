@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PayrollLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PayrollLetterController extends Controller
 {
@@ -68,5 +69,20 @@ class PayrollLetterController extends Controller
 
         return redirect()->route('payroll-letters.index')
             ->with('success', 'Surat Payroll berhasil dihapus.');
+    }
+
+    public function exportPdf(PayrollLetter $payrollLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('payroll-letters.pdf', [
+            'letter' => $payrollLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Payroll_' . $payrollLetter->nomor_surat . '.pdf';
+        return $pdf->download($filename);
     }
 }

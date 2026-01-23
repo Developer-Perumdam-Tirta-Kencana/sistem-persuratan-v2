@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WaterAvailabilityLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class WaterAvailabilityLetterController extends Controller
 {
@@ -68,5 +69,20 @@ class WaterAvailabilityLetterController extends Controller
 
         return redirect()->route('water-availability-letters.index')
             ->with('success', 'Surat Informasi Ketersediaan Air berhasil dihapus.');
+    }
+
+    public function exportPdf(WaterAvailabilityLetter $waterAvailabilityLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('water-availability-letters.pdf', [
+            'letter' => $waterAvailabilityLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Ketersediaan_Air_' . $waterAvailabilityLetter->nama_proyek . '.pdf';
+        return $pdf->download($filename);
     }
 }

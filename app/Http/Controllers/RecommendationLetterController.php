@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RecommendationLetter;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RecommendationLetterController extends Controller
 {
@@ -66,5 +67,20 @@ class RecommendationLetterController extends Controller
 
         return redirect()->route('recommendation-letters.index')
             ->with('success', 'Surat Rekomendasi berhasil dihapus.');
+    }
+
+    public function exportPdf(RecommendationLetter $recommendationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        
+        $pdf = Pdf::loadView('recommendation-letters.pdf', [
+            'letter' => $recommendationLetter,
+            'withKop' => $withKop
+        ]);
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        $filename = 'Surat_Rekomendasi_' . $recommendationLetter->nama_pt . '.pdf';
+        return $pdf->download($filename);
     }
 }
