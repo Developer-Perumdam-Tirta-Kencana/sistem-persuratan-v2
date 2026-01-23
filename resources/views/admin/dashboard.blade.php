@@ -74,53 +74,64 @@
                                     </svg>
                                     <span class="text-sm">Surat Keluar</span>
                                 </a>
-                                <a href="{{ route('informasi.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('informasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <span class="text-sm">Informasi</span>
-                                </a>
-                                <a href="{{ route('payroll.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('payroll.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                            </div>
+                        </div>
+
+                        <div class="animate-slideIn" style="animation-delay: 0.25s;">
+                            <p class="text-xs uppercase text-gray-500 font-bold tracking-wider mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                Template Surat
+                            </p>
+                            <div class="space-y-1">
+                                <a href="{{ route('payroll-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('payroll-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    <span class="text-sm">Payroll</span>
+                                    <span class="text-sm">Surat Payroll</span>
                                 </a>
-                                <a href="{{ route('pembayaran.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('pembayaran.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
-                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                                    </svg>
-                                    <span class="text-sm">Pembayaran</span>
-                                </a>
-                                <a href="{{ route('pemberitahuan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('pemberitahuan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                <a href="{{ route('job-notification-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('job-notification-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                                     </svg>
-                                    <span class="text-sm">Pemberitahuan</span>
+                                    <span class="text-sm">Surat Pemberitahuan</span>
                                 </a>
-                                <a href="{{ route('permohonan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('permohonan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                <a href="{{ route('water-availability-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('water-availability-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    <span class="text-sm">Permohonan</span>
+                                    <span class="text-sm">Surat Ketersediaan Air</span>
                                 </a>
-                                <a href="{{ route('rekomendasi.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('rekomendasi.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                <a href="{{ route('recommendation-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('recommendation-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    <span class="text-sm">Rekomendasi</span>
+                                    <span class="text-sm">Surat Rekomendasi</span>
                                 </a>
-                                <a href="{{ route('surat-tugas.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('surat-tugas.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                <a href="{{ route('task-order-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('task-order-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                     </svg>
                                     <span class="text-sm">Surat Tugas</span>
                                 </a>
-                                <a href="{{ route('undangan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('undangan.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                <a href="{{ route('delegation-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('delegation-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
                                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                                     </svg>
-                                    <span class="text-sm">Undangan</span>
+                                    <span class="text-sm">Surat Delegasi</span>
+                                </a>
+                                <a href="{{ route('internal-transfer-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('internal-transfer-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                    </svg>
+                                    <span class="text-sm">Surat Mutasi Internal</span>
+                                </a>
+                                <a href="{{ route('internship-permission-letters.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:translate-x-1 touch-manipulation {{ request()->routeIs('internship-permission-letters.*') ? 'bg-gray-100 text-indigo-600 font-semibold' : '' }}">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    <span class="text-sm">Surat Izin Magang</span>
                                 </a>
                             </div>
                         </div>

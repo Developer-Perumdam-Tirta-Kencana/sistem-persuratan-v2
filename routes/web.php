@@ -4,14 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuratKeluarController;
-use App\Http\Controllers\InformasiController;
-use App\Http\Controllers\PayrollController;
-use App\Http\Controllers\PembayaranController;
-use App\Http\Controllers\PemberitahuanController;
-use App\Http\Controllers\PermohonanController;
-use App\Http\Controllers\RekomendasiController;
-use App\Http\Controllers\SuratTugasController;
-use App\Http\Controllers\UndanganController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
@@ -79,17 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('internship-permission-letters', InternshipPermissionLetterController::class);
 });
 
-// Fitur Tambahan Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/informasi', [InformasiController::class, 'index'])->name('informasi.index');
-    Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
-    Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
-    Route::get('/pemberitahuan', [PemberitahuanController::class, 'index'])->name('pemberitahuan.index');
-    Route::get('/permohonan', [PermohonanController::class, 'index'])->name('permohonan.index');
-    Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi.index');
-    Route::get('/surat-tugas', [SuratTugasController::class, 'index'])->name('surat-tugas.index');
-    Route::get('/undangan', [UndanganController::class, 'index'])->name('undangan.index');
-});
+// Fitur Tambahan Routes - DIHAPUS (gunakan template letters route yang sudah ada di atas)
 
 // Admin Routes
 Route::middleware(['auth', 'role:manager'])->prefix('admin')->name('admin.')->group(function () {
