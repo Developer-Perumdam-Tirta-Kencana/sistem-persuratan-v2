@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\DelegationLetter;
 use App\Models\User;
+use App\Traits\ApprovalTrait;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html as PhpWordHtml;
 
 class DelegationLetterController extends Controller
 {
+    use ApprovalTrait;
     public function index()
     {
         $letters = DelegationLetter::with(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa'])
@@ -31,6 +36,8 @@ class DelegationLetterController extends Controller
             'penerima_kuasa_id' => 'required|exists:users,id',
             'tujuan_transaksi' => 'required|string',
         ]);
+
+        $validated['status'] = 'menunggu_acc';
 
         DelegationLetter::create($validated);
 
@@ -88,5 +95,49 @@ class DelegationLetterController extends Controller
         
         $filename = 'Surat_Kuasa_Pelimpahan_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
+    }
+
+    public function previewFormat(DelegationLetter $delegationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $delegationLetter->load(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa']);
+        return view('delegation-letters.pdf', [
+            'letter' => $delegationLetter,
+            'withKop' => $withKop,
+        ]);
+    }
+
+    public function exportDocx(DelegationLetter $delegationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $delegationLetter->load(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa']);
+        $html = view('delegation-letters.pdf', [
+            'letter' => $delegationLetter,
+            'withKop' => $withKop,
+        ])->render();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        PhpWordHtml::addHtml($section, $html, false, false);
+
+        $filename = 'Surat_Kuasa_Pelimpahan_' . date('Y-m-d') . '.docx';
+        $tempDir = storage_path('app/temp');
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+        $tempFile = $tempDir . '/' . $filename;
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function approveAction(DelegationLetter $delegationLetter, Request $request)
+    {
+        return $this->approve($delegationLetter, $request);
+    }
+
+    public function rejectAction(DelegationLetter $delegationLetter, Request $request)
+    {
+        return $this->reject($delegationLetter, $request);
     }
 }

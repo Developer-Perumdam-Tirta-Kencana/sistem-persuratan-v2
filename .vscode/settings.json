@@ -43,6 +43,22 @@
         "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan tinker --execute=\"echo 'Aplikasi berhasil dijalankan';\"$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan make:migration add_status_and_approval_to_letters_table$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^php artisan route:list --name=payroll-letters$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^php artisan serve$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:list 2>&1 \\| findstr /E \"preview\\|export\"$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Surat Rekomendasi</title>
+    <title>Surat Pelimpahan Rekening</title>
     <style>
         @page {
             margin: 2cm 2cm 2cm 2cm;
@@ -31,10 +31,6 @@
             margin: 20px 0;
             font-size: 14pt;
         }
-        .nomor {
-            text-align: center;
-            margin-bottom: 20px;
-        }
         .body-text {
             text-align: justify;
             margin: 15px 0;
@@ -44,9 +40,6 @@
         }
         .details {
             margin: 20px 0 20px 40px;
-        }
-        .details-row {
-            margin: 5px 0;
         }
         .signature {
             margin-top: 40px;
@@ -88,7 +81,7 @@
 
     <div class="content">
         <div class="title">
-            SURAT REKOMENDASI
+            SURAT PELIMPAHAN REKENING
         </div>
 
         <div class="body-text">
@@ -114,49 +107,41 @@
                 </table>
             </div>
 
-            <p>Dengan ini memberikan rekomendasi kepada:</p>
+            <p>Dengan ini memberitahukan bahwa telah dilakukan pelimpahan rekening dengan rincian sebagai berikut:</p>
 
             <div class="details">
                 <table class="no-border">
                     <tr>
-                        <td class="label">Nama Perusahaan</td>
+                        <td class="label">Bank Sumber</td>
                         <td>:</td>
-                        <td><strong>{{ $letter->nama_pt }}</strong></td>
+                        <td>{{ $letter->bank_sumber }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Jenis Kegiatan</td>
+                        <td class="label">Nomor Rekening Sumber</td>
                         <td>:</td>
-                        <td>{{ $letter->jenis_kegiatan }}</td>
+                        <td>{{ $letter->no_rek_sumber }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Nama Perumahan</td>
+                        <td class="label">Bank Tujuan</td>
                         <td>:</td>
-                        <td>{{ $letter->nama_perumahan }}</td>
+                        <td>{{ $letter->bank_tujuan }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Jumlah Unit</td>
+                        <td class="label">Nomor Rekening Tujuan</td>
                         <td>:</td>
-                        <td>{{ $letter->jumlah_unit }} Unit</td>
+                        <td>{{ $letter->no_rek_tujuan }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Lokasi</td>
+                        <td class="label">Nominal</td>
                         <td>:</td>
-                        <td>{{ $letter->lokasi }}</td>
+                        <td>Rp {{ number_format($letter->nominal, 0, ',', '.') }}</td>
                     </tr>
                 </table>
             </div>
 
-            <p>
-                Bahwa perusahaan tersebut telah memenuhi persyaratan dan layak untuk mendapatkan rekomendasi 
-                dari PDAM Tirta Kencana Kabupaten Nganjuk dalam rangka {{ $letter->jenis_kegiatan }}.
-            </p>
+            <p>Pelimpahan rekening ini dilakukan dalam rangka pengelolaan keuangan PDAM Tirta Kencana Kabupaten Nganjuk sesuai dengan kebijakan dan peraturan yang berlaku.</p>
 
-            <p>
-                PDAM Tirta Kencana Kabupaten Nganjuk merekomendasikan perusahaan tersebut untuk dapat 
-                melanjutkan proses perizinan yang diperlukan sesuai dengan peraturan yang berlaku.
-            </p>
-
-            <p>Demikian surat rekomendasi ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+            <p>Demikian surat pelimpahan rekening ini kami sampaikan. Atas perhatiannya, kami ucapkan terima kasih.</p>
         </div>
 
         <div class="signature">

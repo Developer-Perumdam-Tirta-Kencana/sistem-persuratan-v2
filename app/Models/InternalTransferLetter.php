@@ -15,9 +15,19 @@ class InternalTransferLetter extends Model
         'bank_tujuan',
         'no_rek_tujuan',
         'nominal',
+        'status',
+        'approved_by',
+        'approved_at',
+        'approval_notes',
     ];
 
     protected $casts = [
         'nominal' => 'decimal:2',
+        'approved_at' => 'datetime',
     ];
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

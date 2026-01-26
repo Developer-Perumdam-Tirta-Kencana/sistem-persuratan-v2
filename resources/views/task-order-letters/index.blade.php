@@ -72,13 +72,20 @@
                                     <span class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-blue-100 text-blue-800">{{ $letter->jumlah_petugas }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-2">
-                                        <a href="{{ route('task-order-letters.show', $letter) }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition">Lihat</a>
-                                        <a href="{{ route('task-order-letters.edit', $letter) }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition">Edit</a>
+                                    <div class="flex justify-center gap-1.5 flex-wrap">
+                                        <div class="inline-flex rounded-lg border border-gray-300 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                            <a href="{{ route('task-order-letters.show', $letter) }}?kop=1" title="Lihat dengan kop" class="px-2.5 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 border-r border-gray-200 transition">Kop</a>
+                                            <a href="{{ route('task-order-letters.show', $letter) }}?kop=0" title="Lihat tanpa kop" class="px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition">Tanpa</a>
+                                        </div>
+                                        <a href="{{ route('task-order-letters.edit', $letter) }}" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition" title="Edit surat">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                        </a>
                                         <form action="{{ route('task-order-letters.destroy', $letter) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')">Hapus</button>
+                                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -168,44 +175,4 @@
             border-color: #2563eb;
         }
     </style>
-</x-app-layout>
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Tugas</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tempat</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keperluan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Petugas</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($letters as $letter)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $letter->hari_tanggal_tugas }}</td>
-                            <td class="px-6 py-4">{{ Str::limit($letter->tempat_tugas, 30) }}</td>
-                            <td class="px-6 py-4">{{ Str::limit($letter->keperluan_tugas, 40) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ count($letter->list_petugas) }} orang</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('task-order-letters.show', $letter) }}" class="text-blue-600 hover:text-blue-900 mr-3">Lihat</a>
-                                <a href="{{ route('task-order-letters.edit', $letter) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                                <form action="{{ route('task-order-letters.destroy', $letter) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada data surat perintah tugas.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-
-                <div class="mt-4">
-                    {{ $letters->links() }}
-                </div>
-            </div>
-        </div>
-    </div>
 </x-app-layout>

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\InternshipPermissionLetter;
+use App\Traits\ApprovalTrait;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html as PhpWordHtml;
 
 class InternshipPermissionLetterController extends Controller
 {
+    use ApprovalTrait;
     public function index()
     {
         $letters = InternshipPermissionLetter::latest()->paginate(15);
@@ -31,6 +36,8 @@ class InternshipPermissionLetterController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         ]);
+
+        $validated['status'] = 'menunggu_acc';
 
         InternshipPermissionLetter::create($validated);
 
@@ -88,5 +95,47 @@ class InternshipPermissionLetterController extends Controller
         
         $filename = 'Surat_Izin_Magang_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
+    }
+
+    public function previewFormat(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        return view('internship-permission-letters.pdf', [
+            'letter' => $internshipPermissionLetter,
+            'withKop' => $withKop,
+        ]);
+    }
+
+    public function exportDocx(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $html = view('internship-permission-letters.pdf', [
+            'letter' => $internshipPermissionLetter,
+            'withKop' => $withKop,
+        ])->render();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        PhpWordHtml::addHtml($section, $html, false, false);
+
+        $filename = 'Surat_Izin_Magang_' . date('Y-m-d') . '.docx';
+        $tempDir = storage_path('app/temp');
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+        $tempFile = $tempDir . '/' . $filename;
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function approveAction(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
+    {
+        return $this->approve($internshipPermissionLetter, $request);
+    }
+
+    public function rejectAction(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
+    {
+        return $this->reject($internshipPermissionLetter, $request);
     }
 }

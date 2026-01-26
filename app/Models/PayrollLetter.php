@@ -16,10 +16,20 @@ class PayrollLetter extends Model
         'bulan_gaji',
         'total_nominal',
         'nomor_rekening_sumber',
+        'status',
+        'approved_by',
+        'approved_at',
+        'approval_notes',
     ];
 
     protected $casts = [
         'tanggal_surat' => 'date',
         'total_nominal' => 'decimal:2',
+        'approved_at' => 'datetime',
     ];
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

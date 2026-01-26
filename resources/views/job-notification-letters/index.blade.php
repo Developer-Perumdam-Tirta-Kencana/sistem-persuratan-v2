@@ -48,6 +48,9 @@
                                 <th class="px-6 py-3 text-left">
                                     <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal Pelaksanaan</span>
                                 </th>
+                                <th class="px-6 py-3 text-left">
+                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</span>
+                                </th>
                                 <th class="px-6 py-3 text-center">
                                     <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</span>
                                 </th>
@@ -65,24 +68,36 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="text-sm text-gray-700">{{ is_string($letter->hari_tanggal_pelaksanaan) ? $letter->hari_tanggal_pelaksanaan : ($letter->hari_tanggal_pelaksanaan ? $letter->hari_tanggal_pelaksanaan->format('d M Y') : '-') }}</span>
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if($letter->status === 'menunggu_acc')
+                                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-semibold">Menunggu</span>
+                                    @elseif($letter->status === 'disetujui')
+                                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Disetujui</span>
+                                    @elseif($letter->status === 'ditolak')
+                                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">Ditolak</span>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-2">
-                                        <a href="{{ route('job-notification-letters.show', $letter) }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                            Lihat
+                                    <div class="flex justify-center gap-1.5 flex-wrap">
+                                        <div class="inline-flex rounded-lg border border-gray-300 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                            <a href="{{ route('job-notification-letters.show', $letter) }}?kop=1" title="Lihat dengan kop" class="px-2.5 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 border-r border-gray-200 transition">Kop</a>
+                                            <a href="{{ route('job-notification-letters.show', $letter) }}?kop=0" title="Lihat tanpa kop" class="px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition">Tanpa</a>
+                                        </div>
+                                        <a href="{{ route('job-notification-letters.exportPdf', $letter) }}" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" title="Export PDF">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                         </a>
-                                        <a href="{{ route('job-notification-letters.edit', $letter) }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                            Edit
+                                        @if($letter->status === 'menunggu_acc')
+                                        <a href="{{ route('job-notification-letters.edit', $letter) }}" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition" title="Edit surat">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                         </a>
                                         <form action="{{ route('job-notification-letters.destroy', $letter) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                                Hapus
+                                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -145,6 +160,7 @@
                     { className: "text-center", targets: [3] }
                 ]
             });
+            @endif
         });
     </script>
 

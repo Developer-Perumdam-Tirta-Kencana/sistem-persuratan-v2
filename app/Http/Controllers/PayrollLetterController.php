@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\PayrollLetter;
+use App\Traits\ApprovalTrait;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html as PhpWordHtml;
 
 class PayrollLetterController extends Controller
 {
+    use ApprovalTrait;
     public function index()
     {
         $letters = PayrollLetter::latest()->paginate(15);
@@ -29,6 +34,8 @@ class PayrollLetterController extends Controller
             'total_nominal' => 'required|numeric|min:0',
             'nomor_rekening_sumber' => 'required|string|max:255',
         ]);
+
+        $validated['status'] = 'menunggu_acc';
 
         PayrollLetter::create($validated);
 
@@ -84,5 +91,47 @@ class PayrollLetterController extends Controller
         
         $filename = 'Surat_Payroll_' . $payrollLetter->nomor_surat . '.pdf';
         return $pdf->download($filename);
+    }
+
+    public function previewFormat(PayrollLetter $payrollLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        return view('payroll-letters.pdf', [
+            'letter' => $payrollLetter,
+            'withKop' => $withKop,
+        ]);
+    }
+
+    public function exportDocx(PayrollLetter $payrollLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $html = view('payroll-letters.pdf', [
+            'letter' => $payrollLetter,
+            'withKop' => $withKop,
+        ])->render();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        PhpWordHtml::addHtml($section, $html, false, false);
+
+        $filename = 'Surat_Payroll_' . $payrollLetter->nomor_surat . '.docx';
+        $tempDir = storage_path('app/temp');
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+        $tempFile = $tempDir . '/' . $filename;
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function approveAction(PayrollLetter $payrollLetter, Request $request)
+    {
+        return $this->approve($payrollLetter, $request);
+    }
+
+    public function rejectAction(PayrollLetter $payrollLetter, Request $request)
+    {
+        return $this->reject($payrollLetter, $request);
     }
 }

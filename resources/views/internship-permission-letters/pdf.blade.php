@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Surat Rekomendasi</title>
+    <title>Surat Izin Magang/PKL</title>
     <style>
         @page {
             margin: 2cm 2cm 2cm 2cm;
@@ -58,6 +58,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 10px 0;
         }
         .no-border td {
             border: none;
@@ -66,6 +67,20 @@
         }
         .label {
             width: 150px;
+        }
+        .student-table {
+            border: 1px solid #000;
+            margin: 20px 0;
+        }
+        .student-table th,
+        .student-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .student-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -88,7 +103,7 @@
 
     <div class="content">
         <div class="title">
-            SURAT REKOMENDASI
+            SURAT IZIN MAGANG/PKL
         </div>
 
         <div class="body-text">
@@ -114,49 +129,56 @@
                 </table>
             </div>
 
-            <p>Dengan ini memberikan rekomendasi kepada:</p>
+            <p>Dengan ini memberikan izin kepada <strong>{{ $letter->instansi_pendidikan }}</strong> untuk melaksanakan magang/praktik kerja lapangan (PKL) dengan rincian sebagai berikut:</p>
 
             <div class="details">
                 <table class="no-border">
                     <tr>
-                        <td class="label">Nama Perusahaan</td>
+                        <td class="label">Nomor Surat Permohonan</td>
                         <td>:</td>
-                        <td><strong>{{ $letter->nama_pt }}</strong></td>
+                        <td>{{ $letter->nomor_surat_permohonan }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Jenis Kegiatan</td>
+                        <td class="label">Tanggal Mulai</td>
                         <td>:</td>
-                        <td>{{ $letter->jenis_kegiatan }}</td>
+                        <td>{{ \Carbon\Carbon::parse($letter->tanggal_mulai)->translatedFormat('d F Y') }}</td>
                     </tr>
                     <tr>
-                        <td class="label">Nama Perumahan</td>
+                        <td class="label">Tanggal Selesai</td>
                         <td>:</td>
-                        <td>{{ $letter->nama_perumahan }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Jumlah Unit</td>
-                        <td>:</td>
-                        <td>{{ $letter->jumlah_unit }} Unit</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Lokasi</td>
-                        <td>:</td>
-                        <td>{{ $letter->lokasi }}</td>
+                        <td>{{ \Carbon\Carbon::parse($letter->tanggal_selesai)->translatedFormat('d F Y') }}</td>
                     </tr>
                 </table>
             </div>
 
-            <p>
-                Bahwa perusahaan tersebut telah memenuhi persyaratan dan layak untuk mendapatkan rekomendasi 
-                dari PDAM Tirta Kencana Kabupaten Nganjuk dalam rangka {{ $letter->jenis_kegiatan }}.
-            </p>
+            <p><strong>Daftar Peserta Magang/PKL:</strong></p>
 
-            <p>
-                PDAM Tirta Kencana Kabupaten Nganjuk merekomendasikan perusahaan tersebut untuk dapat 
-                melanjutkan proses perizinan yang diperlukan sesuai dengan peraturan yang berlaku.
-            </p>
+            @if($letter->list_mahasiswa && count($letter->list_mahasiswa) > 0)
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>NIM</th>
+                        <th>Program Studi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($letter->list_mahasiswa as $index => $mahasiswa)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $mahasiswa['nama'] ?? '-' }}</td>
+                        <td>{{ $mahasiswa['nim'] ?? '-' }}</td>
+                        <td>{{ $mahasiswa['prodi'] ?? '-' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            @endif
 
-            <p>Demikian surat rekomendasi ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+            <p>Peserta magang/PKL diharapkan dapat mematuhi peraturan dan tata tertib yang berlaku di PDAM Tirta Kencana Kabupaten Nganjuk serta memberikan hasil kerja yang baik selama pelaksanaan magang.</p>
+
+            <p>Demikian surat izin magang/PKL ini kami sampaikan. Atas perhatiannya, kami ucapkan terima kasih.</p>
         </div>
 
         <div class="signature">

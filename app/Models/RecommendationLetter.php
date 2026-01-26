@@ -15,5 +15,18 @@ class RecommendationLetter extends Model
         'nama_perumahan',
         'jumlah_unit',
         'lokasi',
+        'status',
+        'approved_by',
+        'approved_at',
+        'approval_notes',
     ];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
+    ];
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

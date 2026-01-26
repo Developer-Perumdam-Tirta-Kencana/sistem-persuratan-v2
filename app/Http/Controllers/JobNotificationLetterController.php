@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobNotificationLetter;
+use App\Traits\ApprovalTrait;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html as PhpWordHtml;
 
 class JobNotificationLetterController extends Controller
 {
+    use ApprovalTrait;
     public function index()
     {
         $letters = JobNotificationLetter::latest()->paginate(15);
@@ -29,6 +34,8 @@ class JobNotificationLetterController extends Controller
             'waktu_selesai' => 'nullable|date_format:H:i',
             'jenis_pekerjaan' => 'required|string|max:255',
         ]);
+
+        $validated['status'] = 'menunggu_acc';
 
         JobNotificationLetter::create($validated);
 
@@ -84,5 +91,47 @@ class JobNotificationLetterController extends Controller
         
         $filename = 'Surat_Pemberitahuan_Pekerjaan_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
+    }
+
+    public function previewFormat(JobNotificationLetter $jobNotificationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        return view('job-notification-letters.pdf', [
+            'letter' => $jobNotificationLetter,
+            'withKop' => $withKop,
+        ]);
+    }
+
+    public function exportDocx(JobNotificationLetter $jobNotificationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $html = view('job-notification-letters.pdf', [
+            'letter' => $jobNotificationLetter,
+            'withKop' => $withKop,
+        ])->render();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        PhpWordHtml::addHtml($section, $html, false, false);
+
+        $filename = 'Surat_Pemberitahuan_Pekerjaan_' . date('Y-m-d') . '.docx';
+        $tempDir = storage_path('app/temp');
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+        $tempFile = $tempDir . '/' . $filename;
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function approveAction(JobNotificationLetter $jobNotificationLetter, Request $request)
+    {
+        return $this->approve($jobNotificationLetter, $request);
+    }
+
+    public function rejectAction(JobNotificationLetter $jobNotificationLetter, Request $request)
+    {
+        return $this->reject($jobNotificationLetter, $request);
     }
 }

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskOrderLetter;
+use App\Traits\ApprovalTrait;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html as PhpWordHtml;
 
 class TaskOrderLetterController extends Controller
 {
+    use ApprovalTrait;
     public function index()
     {
         $letters = TaskOrderLetter::latest()->paginate(15);
@@ -31,6 +36,8 @@ class TaskOrderLetterController extends Controller
             'keperluan_tugas' => 'required|string',
             'pakaian' => 'nullable|string|max:255',
         ]);
+
+        $validated['status'] = 'menunggu_acc';
 
         TaskOrderLetter::create($validated);
 
@@ -88,5 +95,47 @@ class TaskOrderLetterController extends Controller
         
         $filename = 'Surat_Perintah_Tugas_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
+    }
+
+    public function previewFormat(TaskOrderLetter $taskOrderLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        return view('task-order-letters.pdf', [
+            'letter' => $taskOrderLetter,
+            'withKop' => $withKop,
+        ]);
+    }
+
+    public function exportDocx(TaskOrderLetter $taskOrderLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $html = view('task-order-letters.pdf', [
+            'letter' => $taskOrderLetter,
+            'withKop' => $withKop,
+        ])->render();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        PhpWordHtml::addHtml($section, $html, false, false);
+
+        $filename = 'Surat_Perintah_Tugas_' . date('Y-m-d') . '.docx';
+        $tempDir = storage_path('app/temp');
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+        $tempFile = $tempDir . '/' . $filename;
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function approveAction(TaskOrderLetter $taskOrderLetter, Request $request)
+    {
+        return $this->approve($taskOrderLetter, $request);
+    }
+
+    public function rejectAction(TaskOrderLetter $taskOrderLetter, Request $request)
+    {
+        return $this->reject($taskOrderLetter, $request);
     }
 }

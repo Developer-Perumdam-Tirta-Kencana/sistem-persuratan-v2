@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\RecommendationLetter;
+use App\Traits\ApprovalTrait;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Shared\Html as PhpWordHtml;
 
 class RecommendationLetterController extends Controller
 {
+    use ApprovalTrait;
     public function index()
     {
         $letters = RecommendationLetter::latest()->paginate(15);
@@ -28,6 +33,8 @@ class RecommendationLetterController extends Controller
             'jumlah_unit' => 'required|integer|min:1',
             'lokasi' => 'required|string',
         ]);
+
+        $validated['status'] = 'menunggu_acc';
 
         RecommendationLetter::create($validated);
 
@@ -82,5 +89,47 @@ class RecommendationLetterController extends Controller
         
         $filename = 'Surat_Rekomendasi_' . $recommendationLetter->nama_pt . '.pdf';
         return $pdf->download($filename);
+    }
+
+    public function previewFormat(RecommendationLetter $recommendationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        return view('recommendation-letters.pdf', [
+            'letter' => $recommendationLetter,
+            'withKop' => $withKop,
+        ]);
+    }
+
+    public function exportDocx(RecommendationLetter $recommendationLetter, Request $request)
+    {
+        $withKop = $request->query('kop', '1') === '1';
+        $html = view('recommendation-letters.pdf', [
+            'letter' => $recommendationLetter,
+            'withKop' => $withKop,
+        ])->render();
+
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        PhpWordHtml::addHtml($section, $html, false, false);
+
+        $filename = 'Surat_Rekomendasi_' . $recommendationLetter->nama_pt . '.docx';
+        $tempDir = storage_path('app/temp');
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+        $tempFile = $tempDir . '/' . $filename;
+        $writer = IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function approveAction(RecommendationLetter $recommendationLetter, Request $request)
+    {
+        return $this->approve($recommendationLetter, $request);
+    }
+
+    public function rejectAction(RecommendationLetter $recommendationLetter, Request $request)
+    {
+        return $this->reject($recommendationLetter, $request);
     }
 }

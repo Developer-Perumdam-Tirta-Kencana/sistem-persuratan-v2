@@ -15,6 +15,14 @@ class DelegationLetter extends Model
         'pemberi_kuasa_2_id',
         'penerima_kuasa_id',
         'tujuan_transaksi',
+        'status',
+        'approved_by',
+        'approved_at',
+        'approval_notes',
+    ];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
     ];
 
     public function pemberiKuasaPertama()
@@ -30,5 +38,10 @@ class DelegationLetter extends Model
     public function penerimaKuasa()
     {
         return $this->belongsTo(User::class, 'penerima_kuasa_id');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 }

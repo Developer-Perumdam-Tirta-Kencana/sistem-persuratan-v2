@@ -53,9 +53,19 @@
     </style>
 </head>
 <body>
-    @if($withKop)
+    @php
+        $kopBase64 = null;
+        if ($withKop) {
+            $kopPath = public_path('kop.png');
+            if (file_exists($kopPath)) {
+                $kopBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($kopPath));
+            }
+        }
+    @endphp
+
+    @if($kopBase64)
     <div class="kop-surat">
-        <img src="{{ public_path('kop.png') }}" alt="Kop Surat">
+        <img src="{{ $kopBase64 }}" alt="Kop Surat">
     </div>
     <div class="garis-kop"></div>
     @endif
@@ -112,6 +122,13 @@
         <p><strong>Hormat kami,</strong></p>
         <div class="ttd-space"></div>
         <p><strong><u>Direktur PDAM Tirta Kencana</u></strong></p>
+        @if($letter->status === 'disetujui' && $letter->approver)
+        <hr style="margin-top: 40px; margin-bottom: 20px;">
+        <p style="font-size: 10pt; color: #666;">
+            Disetujui oleh: {{ $letter->approver->name }} <br>
+            Tanggal: {{ $letter->approved_at ? $letter->approved_at->translatedFormat('d F Y H:i') : '' }}
+        </p>
+        @endif
     </div>
 </body>
 </html>

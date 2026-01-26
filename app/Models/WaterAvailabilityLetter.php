@@ -16,10 +16,20 @@ class WaterAvailabilityLetter extends Model
         'alamat_proyek',
         'nomor_surat_masuk',
         'tanggal_surat_masuk',
+        'status',
+        'approved_by',
+        'approved_at',
+        'approval_notes',
     ];
 
     protected $casts = [
         'status_ketersediaan' => 'boolean',
         'tanggal_surat_masuk' => 'date',
+        'approved_at' => 'datetime',
     ];
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }
