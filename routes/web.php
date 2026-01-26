@@ -16,6 +16,7 @@ use App\Http\Controllers\TaskOrderLetterController;
 use App\Http\Controllers\DelegationLetterController;
 use App\Http\Controllers\InternalTransferLetterController;
 use App\Http\Controllers\InternshipPermissionLetterController;
+use App\Http\Controllers\ApprovalLetterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,9 @@ Route::middleware(['auth'])->group(function () {
 
 // Surat Keluar Routes
 Route::middleware(['auth'])->group(function () {
+    // Approval Letters Route
+    Route::get('/approval-letters', [ApprovalLetterController::class, 'index'])->name('approval-letters.index');
+    
     Route::resource('surat-keluar', SuratKeluarController::class);
     
     // Template Surat Routes

@@ -59,6 +59,10 @@
         "/^cd \"c:\\\\Users\\\\USER\\\\Documents\\\\Magang hub\\\\sistem-surat-v2\" && php artisan route:list 2>&1 \\| findstr /E \"preview\\|export\"$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^cd \"c:/Users/USER/Documents/Magang hub/sistem-surat-v2\" && php artisan route:list \\| grep approval$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

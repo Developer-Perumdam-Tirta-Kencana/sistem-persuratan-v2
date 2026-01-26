@@ -136,6 +136,21 @@
                             </div>
                         </div>
 
+                        <div class="animate-slideIn" style="animation-delay: 0.35s;">
+                            <p class="text-xs uppercase text-gray-500 font-bold tracking-wider mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Persetujuan
+                            </p>
+                            <a href="{{ route('approval-letters.index') }}" class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 touch-manipulation {{ request()->routeIs('approval-letters.*') ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-sm' : 'hover:bg-gray-50 hover:translate-x-1' }}">
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-sm sm:text-base">Persetujuan Surat</span>
+                            </a>
+                        </div>
+
                         <div class="animate-slideIn" style="animation-delay: 0.3s;">
                             <p class="text-xs uppercase text-gray-500 font-bold tracking-wider mb-2 flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
