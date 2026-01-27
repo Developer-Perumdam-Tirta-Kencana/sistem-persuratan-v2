@@ -43,9 +43,14 @@ class JobNotificationLetterController extends Controller
             ->with('success', 'Surat Pemberitahuan Pekerjaan berhasil dibuat.');
     }
 
-    public function show(JobNotificationLetter $jobNotificationLetter)
+    public function show(JobNotificationLetter $jobNotificationLetter, Request $request)
     {
-        return view('job-notification-letters.show', compact('jobNotificationLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('job-notification-letters.show', [
+            'letter' => $jobNotificationLetter,
+            'jobNotificationLetter' => $jobNotificationLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(JobNotificationLetter $jobNotificationLetter)

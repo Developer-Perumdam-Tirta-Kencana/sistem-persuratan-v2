@@ -15,10 +15,10 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['name' => 'manager', 'description' => 'Manager with full access'],
-            ['name' => 'staff', 'description' => 'Staff member with limited access'],
-            ['name' => 'direksi', 'description' => 'Direksi oversight access'],
-            ['name' => 'kepala_divisi', 'description' => 'Kepala divisi access'],
+            ['name' => 'manager', 'description' => 'Kelola seluruh sistem, user, roles, dan settings. Memiliki akses penuh ke semua fitur dan laporan.'],
+            ['name' => 'staff', 'description' => 'Membuat dan mengelola surat keluar. Dapat mengajukan permohonan surat dan melacak status approval.'],
+            ['name' => 'direksi', 'description' => 'Melakukan approval dan review terhadap surat yang masuk. Memiliki wewenang tertinggi dalam keputusan surat.'],
+            ['name' => 'kepala_divisi', 'description' => 'Melakukan persetujuan tingkat divisi. Dapat meview dan approve surat dari staff di divisinya.'],
         ];
 
         foreach ($roles as $role) {

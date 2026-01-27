@@ -43,9 +43,14 @@ class WaterAvailabilityLetterController extends Controller
             ->with('success', 'Surat Informasi Ketersediaan Air berhasil dibuat.');
     }
 
-    public function show(WaterAvailabilityLetter $waterAvailabilityLetter)
+    public function show(WaterAvailabilityLetter $waterAvailabilityLetter, Request $request)
     {
-        return view('water-availability-letters.show', compact('waterAvailabilityLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('water-availability-letters.show', [
+            'letter' => $waterAvailabilityLetter,
+            'waterAvailabilityLetter' => $waterAvailabilityLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(WaterAvailabilityLetter $waterAvailabilityLetter)

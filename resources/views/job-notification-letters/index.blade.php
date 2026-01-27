@@ -78,14 +78,12 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-1.5 flex-wrap">
+                                    <div class="flex justify-center gap-2 flex-wrap">
+                                        <!-- View Buttons -->
                                         <div class="inline-flex rounded-lg border border-gray-300 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                            <a href="{{ route('job-notification-letters.show', $letter) }}?kop=1" title="Lihat dengan kop" class="px-2.5 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 border-r border-gray-200 transition">Kop</a>
-                                            <a href="{{ route('job-notification-letters.show', $letter) }}?kop=0" title="Lihat tanpa kop" class="px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition">Tanpa</a>
+                                            <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=1" title="Lihat dengan kop (F4)" class="px-4 py-2 text-xs font-medium text-blue-600 hover:bg-blue-50 border-r border-gray-200 transition kop-button">📄 Lihat Dengan Kop</a>
+                                            <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=0" title="Lihat tanpa kop" class="px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 transition">📋 Lihat Tanpa Kop</a>
                                         </div>
-                                        <a href="{{ route('job-notification-letters.exportPdf', $letter) }}" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" title="Export PDF">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                                        </a>
                                         @if($letter->status === 'menunggu_acc')
                                         <a href="{{ route('job-notification-letters.edit', $letter) }}" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition" title="Edit surat">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
@@ -235,4 +233,17 @@
             cursor: not-allowed;
         }
     </style>
+
+    <script>
+        // F4 shortcut untuk view pertama dengan kop
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'F4') {
+                event.preventDefault();
+                const firstKopButton = document.querySelector('.kop-button');
+                if (firstKopButton) {
+                    firstKopButton.click();
+                }
+            }
+        });
+    </script>
 </x-app-layout>

@@ -33,7 +33,7 @@
                 <div class="mt-8 pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Pratinjau Dokumen</h3>
                     <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                        <iframe src="{{ route('payroll-letters.previewFormat', $payrollLetter) }}" 
+                        <iframe src="{{ route('payroll-letters.previewFormat', [$payrollLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0']) }}" 
                                 class="w-full border-0" 
                                 style="height: 600px;"
                                 frameborder="0">
@@ -66,4 +66,5 @@
             </div>
         </div>
     </div>
+</div>
 </x-app-layout>

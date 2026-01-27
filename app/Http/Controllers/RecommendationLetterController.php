@@ -42,9 +42,14 @@ class RecommendationLetterController extends Controller
             ->with('success', 'Surat Rekomendasi berhasil dibuat.');
     }
 
-    public function show(RecommendationLetter $recommendationLetter)
+    public function show(RecommendationLetter $recommendationLetter, Request $request)
     {
-        return view('recommendation-letters.show', compact('recommendationLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('recommendation-letters.show', [
+            'letter' => $recommendationLetter,
+            'recommendationLetter' => $recommendationLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(RecommendationLetter $recommendationLetter)

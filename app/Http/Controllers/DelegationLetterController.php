@@ -45,10 +45,15 @@ class DelegationLetterController extends Controller
             ->with('success', 'Surat Kuasa Pelimpahan berhasil dibuat.');
     }
 
-    public function show(DelegationLetter $delegationLetter)
+    public function show(DelegationLetter $delegationLetter, Request $request)
     {
         $delegationLetter->load(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa']);
-        return view('delegation-letters.show', compact('delegationLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('delegation-letters.show', [
+            'letter' => $delegationLetter,
+            'delegationLetter' => $delegationLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(DelegationLetter $delegationLetter)

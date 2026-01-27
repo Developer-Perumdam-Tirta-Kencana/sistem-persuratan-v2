@@ -97,6 +97,8 @@
     <div class="kop-surat">
         <img src="{{ $kopBase64 }}" alt="Kop Surat">
     </div>
+    @else
+    <div class="kop-surat" style="height: 120px;"></div>
     @endif
 
     <div class="content">

@@ -45,9 +45,14 @@ class TaskOrderLetterController extends Controller
             ->with('success', 'Surat Perintah Tugas berhasil dibuat.');
     }
 
-    public function show(TaskOrderLetter $taskOrderLetter)
+    public function show(TaskOrderLetter $taskOrderLetter, Request $request)
     {
-        return view('task-order-letters.show', compact('taskOrderLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('task-order-letters.show', [
+            'letter' => $taskOrderLetter,
+            'taskOrderLetter' => $taskOrderLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(TaskOrderLetter $taskOrderLetter)

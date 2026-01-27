@@ -68,6 +68,8 @@
         <img src="{{ $kopBase64 }}" alt="Kop Surat">
     </div>
     <div class="garis-kop"></div>
+    @else
+    <div class="kop-surat" style="height: 120px;"></div>
     @endif
 
     <div class="header">

@@ -1,11 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kelola User</h2>
-                <p class="text-sm text-gray-500">Management user dan role</p>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-1a6 6 0 00-9-5.197M7 20v-1a6 6 0 0112 0v1M7 20H2v-1a6 6 0 019-5.197M12 7a4 4 0 110-8 4 4 0 010 8z"/></svg>
+                </span>
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kelola User</h2>
+                    <p class="text-sm text-gray-500">Management user dan role</p>
+                </div>
             </div>
-            <a href="{{ route('admin.dashboard') }}" class="text-sm text-indigo-600 hover:text-indigo-700">Kembali ke Dashboard</a>
+            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Kembali ke Dashboard
+            </a>
         </div>
     </x-slot>
 
@@ -26,13 +34,13 @@
 
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div class="bg-white shadow-sm sm:rounded-lg p-5">
+                <div class="bg-white shadow-sm sm:rounded-lg p-5 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm text-gray-500">Total User</p>
                             <p class="text-2xl font-semibold text-gray-900">{{ $totalUsers }}</p>
                         </div>
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 ring-2 ring-indigo-100">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         </span>
                     </div>
@@ -51,14 +59,20 @@
                 @php
                     $roleConfig = $roleIcons[$role->name] ?? ['icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', 'color' => 'gray'];
                 @endphp
-                <div class="bg-white shadow-sm sm:rounded-lg p-5">
+                <div class="bg-white shadow-sm sm:rounded-lg p-5 hover:shadow-md transition-shadow group cursor-help" title="{{ $role->description ?? '' }}">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-500">{{ ucfirst(str_replace('_', ' ', $role->name)) }}</p>
+                            <p class="text-sm text-gray-700 font-semibold flex items-center gap-2">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700">Role</span>
+                                {{ ucfirst(str_replace('_', ' ', $role->name)) }}
+                            </p>
                             <p class="text-2xl font-semibold text-gray-900">{{ $role->users->count() }}</p>
+                            @if($role->description)
+                                <p class="text-xs text-gray-600 mt-2 group-hover:text-gray-700 line-clamp-2">{{ $role->description }}</p>
+                            @endif
                         </div>
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-{{ $roleConfig['color'] }}-100 text-{{ $roleConfig['color'] }}-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $roleConfig['icon'] }}"/></svg>
+                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-{{ $roleConfig['color'] }}-50 text-{{ $roleConfig['color'] }}-600 ring-2 ring-{{ $roleConfig['color'] }}-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $roleConfig['icon'] }}"/></svg>
                         </span>
                     </div>
                 </div>
@@ -74,17 +88,20 @@
                             <p class="text-sm text-gray-500">Aktifkan atau nonaktifkan menu registrasi untuk pengguna baru</p>
                         </div>
                         <div class="flex items-center gap-3">
-                            <span id="registrationStatusText" class="text-sm font-medium {{ $registrationEnabled ? 'text-emerald-600' : 'text-rose-600' }}">
-                                {{ $registrationEnabled ? 'Aktif' : 'Nonaktif' }}
+                            <span class="inline-flex items-center gap-2">
+                                <svg class="w-4 h-4 {{ $registrationEnabled ? 'text-emerald-600' : 'text-rose-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span id="registrationStatusText" class="text-sm font-medium {{ $registrationEnabled ? 'text-emerald-600' : 'text-rose-600' }}">
+                                    {{ $registrationEnabled ? 'Aktif' : 'Nonaktif' }}
+                                </span>
                             </span>
                             <button 
                                 id="registrationToggle"
                                 onclick="toggleRegistration()"
-                                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 {{ $registrationEnabled ? 'bg-indigo-600' : 'bg-gray-200' }}"
+                                class="relative inline-flex h-7 w-12 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 {{ $registrationEnabled ? 'bg-indigo-600' : 'bg-gray-200' }}"
                                 role="switch"
                                 aria-checked="{{ $registrationEnabled ? 'true' : 'false' }}"
                                 data-enabled="{{ $registrationEnabled ? '1' : '0' }}">
-                                <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {{ $registrationEnabled ? 'translate-x-6' : 'translate-x-1' }}" id="toggleCircle"></span>
+                                <span class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow {{ $registrationEnabled ? 'translate-x-7' : 'translate-x-1' }}" id="toggleCircle"></span>
                             </button>
                         </div>
                     </div>
@@ -95,11 +112,15 @@
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200 flex items-center justify-between">
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Daftar User</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-1a6 6 0 00-9-5.197M7 20v-1a6 6 0 0112 0v1M7 20H2v-1a6 6 0 019-5.197M12 7a4 4 0 110-8 4 4 0 010 8z"/></svg>
+                            Daftar User
+                        </h3>
                         <p class="text-sm text-gray-500">Kelola akun dan role pengguna</p>
                     </div>
-                    <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">
-                        + Tambah User
+                    <button onclick="openAddModal()" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Tambah User
                     </button>
                 </div>
 
@@ -108,32 +129,38 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bergabung</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">User</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Bergabung</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($users as $user)
-                            <tr class="hover:bg-gray-50">
+                            <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
+                                        <div class="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-semibold ring-1 ring-indigo-100">
                                             {{ strtoupper(substr($user->name, 0, 2)) }}
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
+                                            <div class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                                {{ $user->name }}
+                                                <span class="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700">ID: {{ $user->id }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $user->email }}</div>
+                                    <div class="text-sm text-gray-900 flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m0 0l4 4m-4-4l4-4M4 4h16v16H4z"/></svg>
+                                        {{ $user->email }}
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <select onchange="updateRole({{ $user->id }}, this.value)" 
-                                            class="text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                            class="text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white hover:bg-gray-50"
                                             {{ $user->id === auth()->id() ? 'disabled' : '' }}>
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
@@ -146,14 +173,16 @@
                                     {{ $user->created_at->format('d M Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button onclick="openEditModal({{ json_encode($user) }})" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                    <button onclick="openEditModal({{ json_encode($user) }})" class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 mr-3 px-2 py-1 rounded-md hover:bg-indigo-50">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4h2m-1 16v-6m-4 4h8M4 11h16"/></svg>
                                         Edit
                                     </button>
                                     @if($user->id !== auth()->id())
                                         <form action="{{ route('admin.user-management.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-rose-600 hover:text-rose-900">
+                                            <button type="submit" class="inline-flex items-center gap-2 text-rose-600 hover:text-rose-800 px-2 py-1 rounded-md hover:bg-rose-50">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M6 7h12M9 7V4h6v3"/></svg>
                                                 Hapus
                                             </button>
                                         </form>
@@ -213,11 +242,12 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                    <select name="role_id" required class="w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="role_id" id="add_role_id" required class="w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" onchange="updateRoleDescription('add')">
                         @foreach($roles as $role)
-                            <option value="{{ $role->id }}">{{ ucfirst(str_replace('_', ' ', $role->name)) }}</option>
+                            <option value="{{ $role->id }}" data-description="{{ $role->description ?? '' }}">{{ ucfirst(str_replace('_', ' ', $role->name)) }}</option>
                         @endforeach
                     </select>
+                    <p id="add_role_description" class="mt-2 text-sm text-gray-600 italic"></p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4">
@@ -267,11 +297,12 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                    <select name="role_id" id="edit_role_id" required class="w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    <select name="role_id" id="edit_role_id" required class="w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" onchange="updateRoleDescription('edit')">
                         @foreach($roles as $role)
-                            <option value="{{ $role->id }}">{{ ucfirst(str_replace('_', ' ', $role->name)) }}</option>
+                            <option value="{{ $role->id }}" data-description="{{ $role->description ?? '' }}">{{ ucfirst(str_replace('_', ' ', $role->name)) }}</option>
                         @endforeach
                     </select>
+                    <p id="edit_role_description" class="mt-2 text-sm text-gray-600 italic"></p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4">
@@ -287,8 +318,22 @@
     </div>
 
     <script>
+        function updateRoleDescription(modal) {
+            const selectId = modal === 'add' ? 'add_role_id' : 'edit_role_id';
+            const descId = modal === 'add' ? 'add_role_description' : 'edit_role_description';
+            
+            const selectElement = document.getElementById(selectId);
+            const descElement = document.getElementById(descId);
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const description = selectedOption.getAttribute('data-description');
+            
+            descElement.textContent = description || '';
+        }
+
         function openAddModal() {
             document.getElementById('addModal').classList.remove('hidden');
+            // Trigger initial description update
+            setTimeout(() => updateRoleDescription('add'), 100);
         }
 
         function closeAddModal() {
@@ -303,6 +348,8 @@
             document.getElementById('edit_password_confirmation').value = '';
             document.getElementById('editForm').action = `/admin/user-management/${user.id}`;
             document.getElementById('editModal').classList.remove('hidden');
+            // Trigger initial description update
+            setTimeout(() => updateRoleDescription('edit'), 100);
         }
 
         function closeEditModal() {

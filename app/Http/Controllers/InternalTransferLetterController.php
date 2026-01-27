@@ -42,9 +42,14 @@ class InternalTransferLetterController extends Controller
             ->with('success', 'Surat Pelimpahan Rekening berhasil dibuat.');
     }
 
-    public function show(InternalTransferLetter $internalTransferLetter)
+    public function show(InternalTransferLetter $internalTransferLetter, Request $request)
     {
-        return view('internal-transfer-letters.show', compact('internalTransferLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('internal-transfer-letters.show', [
+            'letter' => $internalTransferLetter,
+            'internalTransferLetter' => $internalTransferLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(InternalTransferLetter $internalTransferLetter)

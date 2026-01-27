@@ -43,9 +43,14 @@ class PayrollLetterController extends Controller
             ->with('success', 'Surat Payroll berhasil dibuat.');
     }
 
-    public function show(PayrollLetter $payrollLetter)
+    public function show(PayrollLetter $payrollLetter, Request $request)
     {
-        return view('payroll-letters.show', compact('payrollLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('payroll-letters.show', [
+            'letter' => $payrollLetter,
+            'payrollLetter' => $payrollLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(PayrollLetter $payrollLetter)
@@ -95,9 +100,19 @@ class PayrollLetterController extends Controller
 
     public function previewFormat(PayrollLetter $payrollLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('payroll-letters.pdf', [
+
+        if ($mode === 'pdf') {
+            return view('payroll-letters.pdf', [
+                'letter' => $payrollLetter,
+                'withKop' => $withKop,
+            ]);
+        }
+
+        return view('payroll-letters.preview', [
             'letter' => $payrollLetter,
+            'payrollLetter' => $payrollLetter,
             'withKop' => $withKop,
         ]);
     }

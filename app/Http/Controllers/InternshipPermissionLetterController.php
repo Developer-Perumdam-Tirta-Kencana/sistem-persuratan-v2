@@ -45,9 +45,14 @@ class InternshipPermissionLetterController extends Controller
             ->with('success', 'Surat Izin Magang/PKL berhasil dibuat.');
     }
 
-    public function show(InternshipPermissionLetter $internshipPermissionLetter)
+    public function show(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
     {
-        return view('internship-permission-letters.show', compact('internshipPermissionLetter'));
+        $withKop = $request->query('kop', '1') === '1';
+        return view('internship-permission-letters.show', [
+            'letter' => $internshipPermissionLetter,
+            'internshipPermissionLetter' => $internshipPermissionLetter,
+            'withKop' => $withKop
+        ]);
     }
 
     public function edit(InternshipPermissionLetter $internshipPermissionLetter)
