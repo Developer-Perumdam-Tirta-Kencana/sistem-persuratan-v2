@@ -5,7 +5,8 @@
     <title>Surat Pemberitahuan Pekerjaan</title>
     <style>
         @page {
-            margin: 2cm 2cm 2cm 2cm;
+            margin: 1.5cm 2cm 2cm 2cm;
+            size: {{ $paperSize ?? 'A4' }};
         }
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -15,11 +16,14 @@
         }
         .kop-surat {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            margin-left: -2cm;
+            margin-right: -2cm;
+            margin-top: -1.5cm;
         }
         .kop-surat img {
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            display: block;
         }
         .content {
             margin-top: 20px;

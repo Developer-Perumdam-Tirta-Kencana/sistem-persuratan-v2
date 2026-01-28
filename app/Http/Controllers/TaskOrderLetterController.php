@@ -90,13 +90,15 @@ class TaskOrderLetterController extends Controller
     public function exportPdf(TaskOrderLetter $taskOrderLetter, Request $request)
     {
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         
         $pdf = Pdf::loadView('task-order-letters.pdf', [
             'letter' => $taskOrderLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $paperSize
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($paperSize, 'portrait');
         
         $filename = 'Surat_Perintah_Tugas_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
@@ -104,9 +106,21 @@ class TaskOrderLetterController extends Controller
 
     public function previewFormat(TaskOrderLetter $taskOrderLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('task-order-letters.pdf', [
+        $paperSize = $request->query('paper', 'A4');
+
+        if ($mode === 'pdf') {
+            return view('task-order-letters.pdf', [
+                'letter' => $taskOrderLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('task-order-letters.preview', [
             'letter' => $taskOrderLetter,
+            'taskOrderLetter' => $taskOrderLetter,
             'withKop' => $withKop,
         ]);
     }

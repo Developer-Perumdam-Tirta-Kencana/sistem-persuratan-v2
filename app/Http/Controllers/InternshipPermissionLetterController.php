@@ -90,13 +90,15 @@ class InternshipPermissionLetterController extends Controller
     public function exportPdf(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
     {
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         
         $pdf = Pdf::loadView('internship-permission-letters.pdf', [
             'letter' => $internshipPermissionLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $paperSize
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($paperSize, 'portrait');
         
         $filename = 'Surat_Izin_Magang_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
@@ -104,9 +106,21 @@ class InternshipPermissionLetterController extends Controller
 
     public function previewFormat(InternshipPermissionLetter $internshipPermissionLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('internship-permission-letters.pdf', [
+        $paperSize = $request->query('paper', 'A4');
+
+        if ($mode === 'pdf') {
+            return view('internship-permission-letters.pdf', [
+                'letter' => $internshipPermissionLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('internship-permission-letters.preview', [
             'letter' => $internshipPermissionLetter,
+            'internshipPermissionLetter' => $internshipPermissionLetter,
             'withKop' => $withKop,
         ]);
     }

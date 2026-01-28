@@ -86,13 +86,15 @@ class JobNotificationLetterController extends Controller
     public function exportPdf(JobNotificationLetter $jobNotificationLetter, Request $request)
     {
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         
         $pdf = Pdf::loadView('job-notification-letters.pdf', [
             'letter' => $jobNotificationLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $paperSize
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($paperSize, 'portrait');
         
         $filename = 'Surat_Pemberitahuan_Pekerjaan_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
@@ -100,9 +102,21 @@ class JobNotificationLetterController extends Controller
 
     public function previewFormat(JobNotificationLetter $jobNotificationLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('job-notification-letters.pdf', [
+        $paperSize = $request->query('paper', 'A4');
+
+        if ($mode === 'pdf') {
+            return view('job-notification-letters.pdf', [
+                'letter' => $jobNotificationLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('job-notification-letters.preview', [
             'letter' => $jobNotificationLetter,
+            'jobNotificationLetter' => $jobNotificationLetter,
             'withKop' => $withKop,
         ]);
     }

@@ -87,10 +87,11 @@ class InternalTransferLetterController extends Controller
         
         $pdf = Pdf::loadView('internal-transfer-letters.pdf', [
             'letter' => $internalTransferLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $request->query('paper', 'A4')
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($request->query('paper', 'A4'), 'portrait');
         
         $filename = 'Surat_Pelimpahan_Rekening_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
@@ -98,9 +99,21 @@ class InternalTransferLetterController extends Controller
 
     public function previewFormat(InternalTransferLetter $internalTransferLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('internal-transfer-letters.pdf', [
+        $paperSize = $request->query('paper', 'A4');
+
+        if ($mode === 'pdf') {
+            return view('internal-transfer-letters.pdf', [
+                'letter' => $internalTransferLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('internal-transfer-letters.preview', [
             'letter' => $internalTransferLetter,
+            'internalTransferLetter' => $internalTransferLetter,
             'withKop' => $withKop,
         ]);
     }

@@ -88,15 +88,17 @@ class DelegationLetterController extends Controller
     public function exportPdf(DelegationLetter $delegationLetter, Request $request)
     {
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         
         $delegationLetter->load(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa']);
         
         $pdf = Pdf::loadView('delegation-letters.pdf', [
             'letter' => $delegationLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $paperSize
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($paperSize, 'portrait');
         
         $filename = 'Surat_Kuasa_Pelimpahan_' . date('Y-m-d') . '.pdf';
         return $pdf->download($filename);
@@ -104,10 +106,22 @@ class DelegationLetterController extends Controller
 
     public function previewFormat(DelegationLetter $delegationLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         $delegationLetter->load(['pemberiKuasaPertama', 'pemberiKuasaKedua', 'penerimaKuasa']);
-        return view('delegation-letters.pdf', [
+
+        if ($mode === 'pdf') {
+            return view('delegation-letters.pdf', [
+                'letter' => $delegationLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('delegation-letters.preview', [
             'letter' => $delegationLetter,
+            'delegationLetter' => $delegationLetter,
             'withKop' => $withKop,
         ]);
     }

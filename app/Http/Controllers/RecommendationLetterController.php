@@ -87,10 +87,11 @@ class RecommendationLetterController extends Controller
         
         $pdf = Pdf::loadView('recommendation-letters.pdf', [
             'letter' => $recommendationLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $request->query('paper', 'A4')
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($request->query('paper', 'A4'), 'portrait');
         
         $filename = 'Surat_Rekomendasi_' . $recommendationLetter->nama_pt . '.pdf';
         return $pdf->download($filename);
@@ -98,9 +99,21 @@ class RecommendationLetterController extends Controller
 
     public function previewFormat(RecommendationLetter $recommendationLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('recommendation-letters.pdf', [
+        $paperSize = $request->query('paper', 'A4');
+
+        if ($mode === 'pdf') {
+            return view('recommendation-letters.pdf', [
+                'letter' => $recommendationLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('recommendation-letters.preview', [
             'letter' => $recommendationLetter,
+            'recommendationLetter' => $recommendationLetter,
             'withKop' => $withKop,
         ]);
     }

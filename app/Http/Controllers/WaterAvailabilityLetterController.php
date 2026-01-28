@@ -86,13 +86,15 @@ class WaterAvailabilityLetterController extends Controller
     public function exportPdf(WaterAvailabilityLetter $waterAvailabilityLetter, Request $request)
     {
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         
         $pdf = Pdf::loadView('water-availability-letters.pdf', [
             'letter' => $waterAvailabilityLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $paperSize
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($paperSize, 'portrait');
         
         $filename = 'Surat_Ketersediaan_Air_' . $waterAvailabilityLetter->nama_proyek . '.pdf';
         return $pdf->download($filename);
@@ -100,9 +102,21 @@ class WaterAvailabilityLetterController extends Controller
 
     public function previewFormat(WaterAvailabilityLetter $waterAvailabilityLetter, Request $request)
     {
+        $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
-        return view('water-availability-letters.pdf', [
+        $paperSize = $request->query('paper', 'A4');
+
+        if ($mode === 'pdf') {
+            return view('water-availability-letters.pdf', [
+                'letter' => $waterAvailabilityLetter,
+                'withKop' => $withKop,
+                'paperSize' => $paperSize,
+            ]);
+        }
+
+        return view('water-availability-letters.preview', [
             'letter' => $waterAvailabilityLetter,
+            'waterAvailabilityLetter' => $waterAvailabilityLetter,
             'withKop' => $withKop,
         ]);
     }

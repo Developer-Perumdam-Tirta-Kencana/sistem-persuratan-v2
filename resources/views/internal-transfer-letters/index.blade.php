@@ -1,93 +1,82 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 class="font-bold text-2xl md:text-3xl text-slate-900 leading-tight">
                     {{ __('Surat Pelimpahan Rekening') }}
                 </h2>
-                <p class="text-sm text-gray-600 mt-1">Kelola surat pelimpahan rekening internal transfer</p>
+                <p class="text-sm text-slate-600 mt-2">Kelola dan pantau semua surat pelimpahan rekening internal transfer</p>
             </div>
-            <a href="{{ route('internal-transfer-letters.create') }}" class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+            <a href="{{ route('internal-transfer-letters.create') }}" class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold hover:shadow-lg hover:from-red-700 hover:to-red-800 transition-all duration-200 transform hover:scale-105">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Tambah Surat
+                Buat Surat Baru
             </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             @if(session('success'))
-            <div class="mb-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg flex items-center">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                <span>{{ session('success') }}</span>
+            <div class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 shadow-sm flex items-start animate-fade-in">
+                <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <div>
+                    <h3 class="font-semibold">Sukses!</h3>
+                    <p class="text-sm">{{ session('success') }}</p>
+                </div>
             </div>
             @endif
 
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Table Container -->
+            <div class="bg-white shadow-xl border border-slate-100 overflow-hidden">
                 <!-- Header -->
-                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-900">Daftar Surat Pelimpahan Rekening</h3>
-                        <div class="text-sm text-gray-600">
-                            Total: <span class="font-semibold text-gray-900">{{ $letters->total() }}</span> surat
+                <div class="px-6 sm:px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 via-white to-slate-50">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900">Daftar Surat Pelimpahan Rekening</h3>
+                            <p class="text-sm text-slate-600 mt-1">{{ $letters->total() }} surat dalam sistem</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Table -->
                 <div class="overflow-x-auto">
-                    <table id="internalTransferTable" class="w-full">
+                    <table id="internalTransferTable" class="w-full text-sm">
                         <thead>
-                            <tr class="bg-gray-50 border-b border-gray-200">
-                                <th class="px-6 py-3 text-left">
-                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Bank Sumber</span>
-                                </th>
-                                <th class="px-6 py-3 text-left">
-                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">No. Rek Sumber</span>
-                                </th>
-                                <th class="px-6 py-3 text-left">
-                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Bank Tujuan</span>
-                                </th>
-                                <th class="px-6 py-3 text-left">
-                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">No. Rek Tujuan</span>
-                                </th>
-                                <th class="px-6 py-3 text-left">
-                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Nominal</span>
-                                </th>
-                                <th class="px-6 py-3 text-center">
-                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</span>
-                                </th>
+                            <tr class="bg-slate-100 border-b border-slate-200 hover:bg-slate-200 transition-colors">
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Bank Sumber</th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">No. Rek Sumber</th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Bank Tujuan</th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">No. Rek Tujuan</th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Nominal</th>
+                                <th class="px-6 py-4 text-center font-bold text-slate-700 uppercase tracking-wider text-xs">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody class="divide-y divide-slate-100">
                             @forelse($letters as $letter)
-                            <tr class="hover:bg-gray-50 transition-colors">
+                            <tr class="hover:bg-slate-50 transition-colors duration-150">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-medium text-gray-900">{{ $letter->bank_sumber }}</span>
+                                    <span class="font-medium text-slate-900">{{ $letter->bank_sumber }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-sm text-gray-700">{{ $letter->no_rek_sumber }}</span>
+                                    <span class="text-sm text-slate-700">{{ $letter->no_rek_sumber }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-sm text-gray-700">{{ $letter->bank_tujuan }}</span>
+                                    <span class="text-sm text-slate-700">{{ $letter->bank_tujuan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-sm text-gray-700">{{ $letter->no_rek_tujuan }}</span>
+                                    <span class="text-sm text-slate-700">{{ $letter->no_rek_tujuan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-semibold text-gray-900">Rp {{ number_format($letter->nominal, 0, ',', '.') }}</span>
+                                    <span class="font-semibold text-slate-900">Rp {{ number_format($letter->nominal, 0, ',', '.') }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <div class="flex justify-center gap-1.5 flex-wrap">
                                         <!-- View Buttons -->
-                                        <div class="inline-flex rounded-lg border border-gray-300 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                            <a href="{{ route('internal-transfer-letters.previewFormat', $letter) }}?kop=1" title="Lihat dengan kop (F4)" class="px-4 py-2 text-xs font-medium text-blue-600 hover:bg-blue-50 border-r border-gray-200 transition kop-button">📄 Lihat Dengan Kop</a>
-                                            <a href="{{ route('internal-transfer-letters.previewFormat', $letter) }}?kop=0" title="Lihat tanpa kop" class="px-4 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 transition">📋 Lihat Tanpa Kop</a>
-                                        </div>
+                                        <x-view-dropdown :route="route('internal-transfer-letters.previewFormat', $letter)" :id="$letter->id" />
                                         <form action="{{ route('internal-transfer-letters.destroy', $letter) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
+                                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                             </button>
                                         </form>
@@ -96,8 +85,18 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center">
-                                    <p class="text-gray-600">Belum ada surat pelimpahan rekening. <a href="{{ route('internal-transfer-letters.create') }}" class="text-red-600 hover:text-red-700 font-medium">Buat sekarang</a></p>
+                                <td colspan="6" class="px-6 py-12">
+                                    <div class="text-center">
+                                        <svg class="mx-auto h-12 w-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                        </svg>
+                                        <p class="text-slate-700 font-medium mb-2">Belum ada surat pelimpahan rekening</p>
+                                        <p class="text-slate-600 text-sm mb-4">Mulai dengan membuat surat pertama Anda</p>
+                                        <a href="{{ route('internal-transfer-letters.create') }}" class="inline-flex items-center px-4 py-2 bg-red-600 text-white font-semibold hover:bg-red-700 transition">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                            Buat Surat Baru
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             @endforelse
@@ -189,6 +188,19 @@
                 if (firstKopButton) {
                     firstKopButton.click();
                 }
+            }
+        });
+
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById('dropdown-' + id);
+            const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
+            allDropdowns.forEach(d => { if (d !== dropdown) d.classList.add('hidden'); });
+            dropdown.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('button[onclick^="toggleDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
+                document.querySelectorAll('[id^="dropdown-"]').forEach(d => d.classList.add('hidden'));
             }
         });
     </script>

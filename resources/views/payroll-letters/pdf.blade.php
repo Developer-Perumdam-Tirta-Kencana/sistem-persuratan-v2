@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <title>Surat Payroll - {{ $letter->nomor_surat }}</title>
     <style>
+        @page {
+            margin: 1.5cm 2cm 2cm 2cm;
+            size: {{ $paperSize ?? 'A4' }};
+        }
         body {
             font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
@@ -13,11 +17,14 @@
         }
         .kop-surat {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            margin-left: -20px;
+            margin-right: -20px;
+            margin-top: -20px;
         }
         .kop-surat img {
             width: 100%;
-            max-width: 700px;
+            display: block;
         }
         .garis-kop {
             border-top: 3px solid #000;

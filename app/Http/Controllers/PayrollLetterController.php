@@ -86,13 +86,15 @@ class PayrollLetterController extends Controller
     public function exportPdf(PayrollLetter $payrollLetter, Request $request)
     {
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
         
         $pdf = Pdf::loadView('payroll-letters.pdf', [
             'letter' => $payrollLetter,
-            'withKop' => $withKop
+            'withKop' => $withKop,
+            'paperSize' => $paperSize
         ]);
         
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper($paperSize, 'portrait');
         
         $filename = 'Surat_Payroll_' . $payrollLetter->nomor_surat . '.pdf';
         return $pdf->download($filename);
@@ -102,11 +104,13 @@ class PayrollLetterController extends Controller
     {
         $mode = $request->query('mode', 'page');
         $withKop = $request->query('kop', '1') === '1';
+        $paperSize = $request->query('paper', 'A4');
 
         if ($mode === 'pdf') {
             return view('payroll-letters.pdf', [
                 'letter' => $payrollLetter,
                 'withKop' => $withKop,
+                'paperSize' => $paperSize,
             ]);
         }
 
