@@ -8,8 +8,8 @@
         </div>
     </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
 
             <!-- Statistics Section -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
@@ -96,25 +96,34 @@
             </div>
 
             <!-- Letters Table -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col flex-1">
                 <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-transparent">
-                    <h3 class="text-lg font-semibold text-gray-900">Daftar Surat</h3>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Daftar Surat</h3>
+                        <!-- Search Input -->
+                        <div class="w-full sm:w-64 relative">
+                            <input type="text" id="approvalSearch" placeholder="Cari..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
-                <div class="overflow-x-auto p-6">
-                    <table id="approvalLettersTable" class="min-w-full divide-y divide-gray-200 display" style="width:100%">
-                        <thead class="bg-gray-50">
+                <div class="overflow-x-auto px-4 pt-4">
+                    <table id="approvalLettersTable" class="min-w-full divide-y divide-gray-200 display text-sm" style="width:100%">
+                        <thead class="bg-blue-100">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Template</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Nomor Surat</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Perihal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-blue-200 transition" data-column="template">Template</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-blue-200 transition" data-column="nomor_surat">Nomor Surat</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-blue-200 transition" data-column="perihal">Perihal</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-blue-200 transition" data-column="tanggal">Tanggal</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-blue-200 transition" data-column="status">Status</th>
+                                <th class="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($letters as $letter)
-                                <tr class="hover:bg-gray-50 transition-colors">
+                                <tr class="hover:bg-blue-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                             {{ $letter->template_name }}
@@ -162,7 +171,7 @@
                                                 </span>
                                         @endswitch
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <td class="px-3 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-sm font-medium">
                                         <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Lihat</a>
                                         @if($letter->status === 'menunggu_acc')
                                             <button type="button" class="text-green-600 hover:text-green-900 mr-3" onclick="approveLetter('{{ $letter->template }}', {{ $letter->id }})">Setujui</button>
@@ -183,20 +192,48 @@
 
     <style>
         /* DataTables Custom Styling */
+        .dataTables_wrapper {\n            width: 100%;
+        }
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: flex;
+            align-items: center;
+        }
         .dataTables_wrapper .dataTables_length select,
         .dataTables_wrapper .dataTables_filter input {
+            min-width: 150px;
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
         }
-        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_info {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
         .dataTables_wrapper .dataTables_paginate {
             margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.5rem 1rem;
-            margin: 0 0.25rem;
+            padding: 0.4rem 0.6rem;
+            margin: 0;
             border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+        @media (max-width: 640px) {
+            .dataTables_wrapper .dataTables_length select,
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+            }
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
             background: #3b82f6 !important;
@@ -212,9 +249,11 @@
 
     <script>
         $(document).ready(function() {
-            // Initialize DataTable with advanced features
-            var table = $('#approvalLettersTable').DataTable({
-                "pageLength": 25,
+            // Prevent reinitializing DataTable
+            if (!$.fn.DataTable.isDataTable('#approvalLettersTable')) {
+                // Initialize DataTable with advanced features
+                var table = $('#approvalLettersTable').DataTable({
+                    "pageLength": 25,
                 "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
                 "order": [[3, "desc"]], // Sort by date column (newest first)
                 "language": {
@@ -261,6 +300,7 @@
                 $('#statusFilter').val('');
                 table.search('').columns().search('').draw();
             });
+            }
         });
 
         function approveLetter(template, id) {

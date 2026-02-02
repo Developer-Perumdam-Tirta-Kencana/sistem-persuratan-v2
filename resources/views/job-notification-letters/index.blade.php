@@ -14,7 +14,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8 px-4 sm:px-6 lg:px-8">
+    <div class="py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             @if(session('success'))
             <div class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 rounded-r-lg shadow-sm flex items-start animate-fade-in">
@@ -27,42 +27,69 @@
             @endif
 
             <!-- Table Container -->
-            <div class="bg-white shadow-xl rounded-2xl border border-slate-100 overflow-hidden">
-                <!-- Header -->
-                <div class="px-6 sm:px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 via-white to-slate-50">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="bg-white shadow-xl rounded-2xl border border-slate-100 overflow-hidden flex flex-col flex-1">
+                <!-- Header with Search and Filter -->
+                <div class="px-6 py-5 border-b border-slate-200 bg-gradient-to-r from-blue-50 via-white to-blue-50">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                         <div>
                             <h3 class="text-xl font-bold text-slate-900">Daftar Surat</h3>
                             <p class="text-sm text-slate-600 mt-1">{{ $letters->total() }} surat dalam sistem</p>
                         </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <div class="flex items-center gap-2">
-                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                                <span class="text-slate-600">Menunggu</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                <span class="text-slate-600">Disetujui</span>
-                            </div>
+                        <!-- Search Input -->
+                        <div class="w-full sm:w-64 relative">
+                            <input type="text" id="jobNotificationSearch" placeholder="Cari..." class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <svg class="absolute right-3 top-2.5 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <span class="text-slate-600">Menunggu</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="text-slate-600">Disetujui</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Table -->
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto px-4 pt-4">
                     <table id="jobNotificationTable" class="w-full text-sm">
                         <thead>
-                            <tr class="bg-slate-100 border-b border-slate-200 hover:bg-slate-200 transition-colors">
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Instansi Tujuan</th>
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Jenis Pekerjaan</th>
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Tanggal Pelaksanaan</th>
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Status</th>
+                            <tr class="bg-blue-100 border-b border-slate-200">
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="instansi">
+                                    <div class="flex items-center gap-2">
+                                        Instansi Tujuan
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="jenis_pekerjaan">
+                                    <div class="flex items-center gap-2">
+                                        Jenis Pekerjaan
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="tanggal_pelaksanaan">
+                                    <div class="flex items-center gap-2">
+                                        Tanggal Pelaksanaan
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="status">
+                                    <div class="flex items-center gap-2">
+                                        Status
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
                                 <th class="px-6 py-4 text-center font-bold text-slate-700 uppercase tracking-wider text-xs">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @forelse($letters as $letter)
-                            <tr class="hover:bg-slate-50 transition-colors duration-150 group">
+                            <tr class="hover:bg-blue-50 transition-colors duration-150 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="font-semibold text-slate-900">{{ $letter->instansi_tujuan }}</span>
                                 </td>
@@ -91,9 +118,11 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-1.5 flex-wrap">
+                                    <div class="flex justify-center gap-2 flex-wrap">
                                         <!-- View Dropdown -->
-                                        <x-view-dropdown :route="route('job-notification-letters.previewFormat', $letter)" :id="$letter->id" />
+                                        <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=1&paper=A4" target="_blank" class="inline-flex items-center px-3 py-2 text-xs font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition" title="Preview surat">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        </a>
                                         @if($letter->status === 'menunggu_acc')
                                         <a href="{{ route('job-notification-letters.edit', $letter) }}" class="inline-flex items-center justify-center px-3 py-2 text-xs font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-100 rounded-lg transition-colors duration-150" title="Edit">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
@@ -136,8 +165,61 @@
             </div>
         </div>
     </div>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.tailwindcss.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            @if($letters->count() > 0)
+            // Prevent reinitializing DataTable
+            if (!$.fn.DataTable.isDataTable('#jobNotificationTable')) {
+                const table = $('#jobNotificationTable').DataTable({
+                    language: {
+                        lengthMenu: "Tampilkan _MENU_ per halaman",
+                        zeroRecords: "Tidak ada data ditemukan",
+                        info: "_START_ hingga _END_ dari _TOTAL_ surat",
+                        infoEmpty: "Tidak ada data",
+                        infoFiltered: "(disaring dari _MAX_ total)",
+                        search: "Cari:",
+                        paginate: {
+                            first: "Pertama",
+                            last: "Terakhir",
+                            next: "Selanjutnya",
+                            previous: "Sebelumnya"
+                        }
+                    },
+                    pageLength: 15,
+                    lengthMenu: [[10, 15, 25, 50, 100, -1], [10, 15, 25, 50, 100, "Semua"]],
+                    responsive: true,
+                    autoWidth: false,
+                    columnDefs: [
+                        { orderable: true, targets: [0, 1, 2, 3] },
+                        { orderable: false, targets: [4] }
+                    ],
+                    order: [[0, 'desc']],
+                    dom: 'lfrtp<"clear">',
+                    drawCallback: function() {
+                        // Refresh dropdown functionality after redraw
+                        document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+                            d.classList.add('hidden');
+                        });
+                    }
+                });
+
+                // Custom search with visual feedback
+                $('#jobNotificationSearch').on('keyup', function() {
+                    table.search(this.value).draw();
+                });
+            }
+            @endif
+        });
+    </script>
+
                             @forelse($letters as $letter)
-                            <tr class="hover:bg-gray-50 transition-colors">
+                            <tr class="hover:bg-blue-50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="font-medium text-gray-900">{{ $letter->instansi_tujuan }}</span>
                                 </td>

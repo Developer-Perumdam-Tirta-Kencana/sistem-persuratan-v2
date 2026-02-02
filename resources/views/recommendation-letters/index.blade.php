@@ -14,7 +14,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8 px-4 sm:px-6 lg:px-8">
+    <div class="py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             @if(session('success'))
             <div class="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-800 shadow-sm flex items-start animate-fade-in">
@@ -27,48 +27,72 @@
             @endif
 
             <!-- Table Container -->
-            <div class="bg-white shadow-xl border border-slate-100 overflow-hidden">
-                <!-- Header -->
-                <div class="px-6 sm:px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 via-white to-slate-50">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="bg-white shadow-xl border border-slate-100 rounded-lg overflow-hidden">
+                <!-- Header with Search and Filter -->
+                <div class="px-6 py-5 border-b border-slate-200 bg-gradient-to-r from-blue-50 via-white to-blue-50">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900">Daftar Surat Rekomendasi</h3>
-                            <p class="text-sm text-slate-600 mt-1">{{ $letters->total() }} surat dalam sistem</p>
+                            <h3 class="text-lg sm:text-xl font-bold text-slate-900">Daftar Surat Rekomendasi</h3>
+                            <p class="text-xs sm:text-sm text-slate-600 mt-1">{{ $letters->total() }} surat dalam sistem</p>
+                        </div>
+                        <!-- Search Input -->
+                        <div class="w-full sm:w-64 relative">
+                            <input type="text" id="recommendationSearch" placeholder="Cari..." class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <svg class="absolute right-3 top-2.5 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
 
                 <!-- Table -->
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto px-4 pt-4">
                     <table id="recommendationTable" class="w-full text-sm">
                         <thead>
-                            <tr class="bg-slate-100 border-b border-slate-200 hover:bg-slate-200 transition-colors">
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Nama PT</th>
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Jenis Kegiatan</th>
-                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs">Tanggal Kegiatan</th>
+                            <tr class="bg-blue-100 border-b border-slate-200">
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="nama_pt">
+                                    <div class="flex items-center gap-2">
+                                        Nama PT
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="jenis_kegiatan">
+                                    <div class="flex items-center gap-2">
+                                        Jenis Kegiatan
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="tanggal_kegiatan">
+                                    <div class="flex items-center gap-2">
+                                        Tanggal
+                                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
+                                    </div>
+                                </th>
                                 <th class="px-6 py-4 text-center font-bold text-slate-700 uppercase tracking-wider text-xs">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @forelse($letters as $letter)
-                            <tr class="hover:bg-slate-50 transition-colors duration-150">
+                            <tr class="hover:bg-blue-50 transition-colors duration-150">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-medium text-slate-900">{{ $letter->nama_pt }}</span>
+                                    <span class="font-medium text-slate-900 text-xs sm:text-sm">{{ $letter->nama_pt }}</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="text-sm text-slate-700">{{ $letter->jenis_kegiatan }}</span>
+                                    <span class="text-xs sm:text-sm text-slate-700">{{ $letter->jenis_kegiatan }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-sm text-slate-700">{{ $letter->tanggal_kegiatan ? $letter->tanggal_kegiatan->format('d M Y') : '-' }}</span>
+                                    <span class="text-xs sm:text-sm text-slate-700">{{ $letter->tanggal_kegiatan ? $letter->tanggal_kegiatan->format('d M Y') : '-' }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-1.5 flex-wrap">
+                                    <div class="flex justify-center gap-2 flex-wrap">
                                         <!-- View Buttons -->
-                                        <x-view-dropdown :route="route('recommendation-letters.previewFormat', $letter)" :id="$letter->id" />
+                                        <a href="{{ route('recommendation-letters.previewFormat', $letter) }}?kop=1&paper=A4" target="_blank" class="inline-flex items-center px-3 py-2 text-xs font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition" title="Preview surat">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        </a>
                                         <form action="{{ route('recommendation-letters.destroy', $letter) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
+                                            <button type="submit" class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                             </button>
                                         </form>
@@ -77,7 +101,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-12">
+                                <td colspan="4" class="px-6 py-16">
                                     <div class="text-center">
                                         <svg class="mx-auto h-12 w-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -106,7 +130,9 @@
     <script>
         $(document).ready(function() {
             @if($letters->count() > 0)
-            $('#recommendationTable').DataTable({
+            // Prevent reinitializing DataTable
+            if (!$.fn.DataTable.isDataTable('#recommendationTable')) {
+                $('#recommendationTable').DataTable({
                 language: {
                     lengthMenu: "Tampilkan _MENU_ per halaman",
                     zeroRecords: "Tidak ada data",
@@ -134,61 +160,83 @@
                     { className: "text-center", targets: [3] }
                 ]
             });
+            }
             @endif
         });
     </script>
 
     <style>
+        /* Enhanced DataTables Styling */
+        .dataTables_wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter {
             display: flex;
+            flex-direction: column;
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+            flex-wrap: wrap;
         }
         
-        .dataTables_wrapper .dataTables_filter input {
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
             padding: 0.5rem 0.75rem;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             font-size: 0.875rem;
+            transition: all 0.2s;
+            min-width: 150px;
         }
         
-        .dataTables_wrapper .dataTables_filter input:focus {
+        .dataTables_wrapper .dataTables_filter input:focus,
+        .dataTables_wrapper .dataTables_length select:focus {
             outline: none;
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .dataTables_wrapper .dataTables_length select {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
         }
         
         .dataTables_wrapper .dataTables_info {
             padding: 1rem 0;
             font-size: 0.875rem;
             color: #6b7280;
+            margin-top: 1rem;
         }
         
         .dataTables_wrapper .dataTables_paginate {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.25rem;
             padding: 1rem 0;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.5rem 0.75rem;
+            padding: 0.4rem 0.6rem;
             border: 1px solid #d1d5db;
             border-radius: 0.375rem;
             cursor: pointer;
             transition: all 0.2s;
             background: white;
             color: #374151;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
         
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.disabled):not(.current) {
             background-color: #f3f4f6;
             border-color: #9ca3af;
         }
@@ -203,10 +251,34 @@
             background-color: #1d4ed8;
         }
         
-        .dataTables_wrapper .dataTables_paginate .paginate_button:disabled,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+        .dataTables_wrapper .dataTables_paginate .paginate_button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .dataTables_wrapper .dataTables_filter input,
+            .dataTables_wrapper .dataTables_length select {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .dataTables_wrapper .dataTables_paginate {
+                justify-content: center;
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                text-align: center;
+                width: 100%;
+            }
         }
     </style>
 
