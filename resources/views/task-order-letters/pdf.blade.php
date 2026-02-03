@@ -5,7 +5,7 @@
     <title>Surat Perintah Tugas</title>
     <style>
         @page {
-            margin: 0;
+            margin: 20mm;
             size: {{ $paperSize ?? 'A4' }};
         }
         body {
@@ -18,16 +18,30 @@
         }
         .kop-surat {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 0;
         }
         .kop-surat img {
             width: 100%;
             display: block;
         }
+        /* full-bleed kop for PDF: extend image outside page margins */
+        .kop-surat.full-bleed {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: calc(100% + 40mm);
+            margin-left: -20mm;
+        }
+        .kop-surat.full-bleed img {
+            width: 100%;
+            display: block;
+        }
         .content {
-            margin-top: 20px;
-            padding: 0 40px;
+            margin-top: 10px;
+            padding: 0 24px;
             box-sizing: border-box;
+            /* ensure content doesn't overflow page in PDF render */
+            overflow: visible;
         }
         .title {
             text-align: center;
@@ -35,6 +49,11 @@
             text-decoration: underline;
             margin: 20px 0;
             font-size: 14pt;
+        }
+        .nomor-center {
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 11pt;
         }
         .nomor {
             text-align: center;
@@ -59,6 +78,14 @@
         }
         .signature-space {
             margin-top: 60px;
+        }
+        /* fixed signature anchored to page bottom-right for PDF */
+        .signature-fixed {
+            position: fixed;
+            right: 20mm;
+            bottom: 20mm;
+            width: 45%;
+            text-align: right;
         }
         table {
             width: 100%;
@@ -87,6 +114,25 @@
             background-color: #f3f4f6;
             font-weight: bold;
         }
+        .petugas-columns {
+            -webkit-column-width: 220px;
+            -moz-column-width: 220px;
+            column-width: 220px;
+            column-gap: 24px;
+            -webkit-column-gap: 24px;
+            -moz-column-gap: 24px;
+            padding-left: 20px;
+        }
+        .petugas-columns li {
+            break-inside: avoid;
+            -webkit-column-break-inside: avoid;
+            -moz-column-break-inside: avoid;
+            margin-bottom: 6px;
+        }
+        .dasar-full {
+            width: 100%;
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -101,98 +147,116 @@
     @endphp
 
     @if($kopBase64)
-    <div class="kop-surat">
+    <div class="kop-surat full-bleed">
         <img src="{{ $kopBase64 }}" alt="Kop Surat">
     </div>
+    <div style="height: 140px;"></div>
     @else
     <div class="kop-surat" style="height: 120px;"></div>
     @endif
 
     <div class="content">
-        <div class="title">
-            SURAT PERINTAH TUGAS
-        </div>
-
-        <div class="body-text">
-            <p><strong>DASAR:</strong></p>
-            <div class="indent">
-                <p>{{ $letter->dasar_surat }}</p>
+        <div style="position: relative;">
+            <div class="title">
+                SURAT PERINTAH TUGAS
             </div>
 
-            <p><strong>MENUGASKAN:</strong></p>
-            
-            <p>Kepada petugas yang namanya tercantum di bawah ini:</p>
-
-            <table class="petugas-table">
-                <thead>
-                    <tr>
-                        <th style="width: 50px; text-align: center;">No.</th>
-                        <th>Nama Petugas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $listPetugas = is_array($letter->list_petugas) ? $letter->list_petugas : json_decode($letter->list_petugas, true);
-                    @endphp
-                    @foreach($listPetugas as $index => $petugas)
-                    <tr>
-                        <td style="text-align: center;">{{ $index + 1 }}</td>
-                        <td>{{ $petugas }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <p><strong>UNTUK:</strong></p>
-
-            <div class="details">
-                <table class="no-border">
-                    <tr>
-                        <td class="label">Hari/Tanggal</td>
-                        <td>:</td>
-                        <td>{{ $letter->hari_tanggal_tugas }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Waktu</td>
-                        <td>:</td>
-                        <td>{{ $letter->waktu_tugas }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tempat</td>
-                        <td>:</td>
-                        <td>{{ $letter->tempat_tugas }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Keperluan</td>
-                        <td>:</td>
-                        <td>{{ $letter->keperluan_tugas }}</td>
-                    </tr>
-                    @if($letter->pakaian)
-                    <tr>
-                        <td class="label">Pakaian</td>
-                        <td>:</td>
-                        <td>{{ $letter->pakaian }}</td>
-                    </tr>
-                    @endif
-                </table>
+            @if(!empty($letter->nomor_surat))
+            <div class="nomor-center">
+                Nomor : {{ $letter->nomor_surat }}
             </div>
-
-            <p>Demikian surat perintah tugas ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.</p>
-        </div>
-
-        <div class="signature">
-            <p>Nganjuk, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-            <p><strong>PDAM Tirta Kencana</strong></p>
-            <p><strong>Kabupaten Nganjuk</strong></p>
-            <div class="signature-space"></div>
-            <p><strong>Direktur Utama</strong></p>
-            @if($letter->status === 'disetujui' && $letter->approver)
-            <hr style="margin-top: 40px; margin-bottom: 20px;">
-            <p style="font-size: 10pt; color: #666;">
-                Disetujui oleh: {{ $letter->approver->name }} <br>
-                Tanggal: {{ $letter->approved_at ? $letter->approved_at->translatedFormat('d F Y H:i') : '' }}
-            </p>
             @endif
+
+            <div class="body-text">
+                <p style="margin-bottom:6px;"><strong>DASAR</strong></p>
+                <div class="dasar-full">
+                    <p style="text-align:justify; margin:0;">{!! nl2br(e($letter->dasar_surat)) !!}</p>
+                </div>
+
+                <p style="margin-top:6px; margin-bottom:6px;"><strong>MEMERINTAHKAN :</strong></p>
+
+                @php
+                    $listPetugas = is_array($letter->list_petugas) ? $letter->list_petugas : (is_string($letter->list_petugas) ? json_decode($letter->list_petugas, true) : []);
+                    $petugasCount = count($listPetugas);
+                @endphp
+                <div style="margin-bottom:8px;">
+                    @if($petugasCount > 10)
+                        @php
+                            $half = (int) ceil($petugasCount / 2);
+                            $left = array_slice($listPetugas, 0, $half);
+                            $right = array_slice($listPetugas, $half);
+                        @endphp
+                        <div style="display:flex; gap:24px;">
+                            <ol style="margin:0; padding-left:18px; width:50%;">
+                                @foreach($left as $index => $petugas)
+                                    @php $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas; @endphp
+                                    <li style="margin-bottom:4px; font-weight:600;">{{ strtoupper($name) }}</li>
+                                @endforeach
+                            </ol>
+                            <ol start="{{ $half + 1 }}" style="margin:0; padding-left:18px; width:50%;">
+                                @foreach($right as $index => $petugas)
+                                    @php $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas; @endphp
+                                    <li style="margin-bottom:4px; font-weight:600;">{{ strtoupper($name) }}</li>
+                                @endforeach
+                            </ol>
+                        </div>
+                    @else
+                        <ol style="margin:0; padding-left:18px;">
+                            @foreach($listPetugas as $index => $petugas)
+                                @php $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas; @endphp
+                                <li style="margin-bottom:4px; font-weight:600;">{{ strtoupper($name) }}</li>
+                            @endforeach
+                        </ol>
+                    @endif
+                </div>
+
+                <p style="margin-top:6px; margin-bottom:12px;"><strong>Kepada</strong>
+                <span style="margin-left:8px;">&nbsp;</span></p>
+
+                <div style="margin-top:4px;">
+                    <table class="no-border">
+                        <tr>
+                            <td style="width:80px;">Hari</td>
+                            <td style="width:8px;">:</td>
+                            <td>{{ $letter->hari ?? '' }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>:</td>
+                            <td>{{ $letter->tanggal_surat ? $letter->tanggal_surat->format('d F Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pukul</td>
+                            <td>:</td>
+                            <td>{{ $letter->waktu_tugas }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tempat</td>
+                            <td>:</td>
+                            <td>{{ $letter->tempat_tugas }}</td>
+                        </tr>
+                        <tr>
+                            <td>Keperluan</td>
+                            <td>:</td>
+                            <td style="text-align:justify;">{{ $letter->keperluan_tugas }}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p style="margin-top:12px;">Demikian Surat Perintah Tugas ini untuk dilaksanakan dengan penuh tanggung jawab.</p>
+            </div>
+
+                    <div style="margin-top:18px; position:relative; min-height:120px;">
+                        <div class="signature-fixed">
+                            <p style="margin:0;">Dikeluarkan di : {{ \App\Models\SystemSetting::get('district', 'Jombang') }}</p>
+                            <p style="margin:0;">Pada Tanggal  : {{ $letter->tanggal_surat ? $letter->tanggal_surat->format('d F Y') : \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                            <p style="margin:6px 0 8px;">--------------------------------------------</p>
+                            <p style="margin:0; font-weight:700;">{{ \App\Models\SystemSetting::get('company_line1', 'Perusahaan Umum Daerah Air Minum') }}</p>
+                            <p style="margin:0; font-weight:700;">{{ \App\Models\SystemSetting::get('company_line2', 'Tirta Kencana Kab. Jombang') }}</p>
+                            <p style="margin:6px 0 0; font-weight:700;">{{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM. S.Pd, M.Pd') }}</p>
+                            <p style="margin:0;">NIP. {{ \App\Models\SystemSetting::get('director_nip', '19800815 202502 1 001') }}</p>
+                        </div>
+                    </div>
         </div>
     </div>
 </body>

@@ -12,7 +12,33 @@
                 <form action="{{ route('task-order-letters.update', $taskOrderLetter) }}" method="POST" x-data="{ petugas: {{ json_encode(old('list_petugas', $taskOrderLetter->list_petugas)) }} }">
                     @csrf
                     @method('PUT')
-                    
+                    <div class="mb-4">
+                        <label for="nomor_surat" class="block text-gray-700 text-sm font-bold mb-2">Nomor Surat</label>
+                        <input type="text" name="nomor_surat" id="nomor_surat" value="{{ old('nomor_surat', $taskOrderLetter->nomor_surat) }}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nomor_surat') border-red-500 @enderror">
+                        @error('nomor_surat')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="hari" class="block text-gray-700 text-sm font-bold mb-2">Hari *</label>
+                        <input type="text" name="hari" id="hari" value="{{ old('hari', $taskOrderLetter->hari) }}" placeholder="Contoh: Rabu - Jumat"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('hari') border-red-500 @enderror" required>
+                        @error('hari')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="tanggal_surat" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Dikeluarkan (opsional)</label>
+                        <input type="date" name="tanggal_surat" id="tanggal_surat" value="{{ old('tanggal_surat', optional($taskOrderLetter->tanggal_surat)->format('Y-m-d')) }}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('tanggal_surat') border-red-500 @enderror">
+                        @error('tanggal_surat')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="mb-4">
                         <label for="dasar_surat" class="block text-gray-700 text-sm font-bold mb-2">Dasar Surat *</label>
                         <textarea name="dasar_surat" id="dasar_surat" rows="2" 

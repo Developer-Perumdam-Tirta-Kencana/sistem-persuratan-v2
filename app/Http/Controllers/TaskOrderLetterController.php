@@ -27,10 +27,12 @@ class TaskOrderLetterController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nomor_surat' => 'nullable|string|max:255',
             'dasar_surat' => 'required|string',
             'list_petugas' => 'required|array|min:1',
             'list_petugas.*' => 'required|string',
-            'hari_tanggal_tugas' => 'required|string|max:255',
+            'hari' => 'required|string|max:255',
+            'tanggal_surat' => 'nullable|date',
             'waktu_tugas' => 'required|string|max:255',
             'tempat_tugas' => 'required|string|max:255',
             'keperluan_tugas' => 'required|string',
@@ -64,9 +66,11 @@ class TaskOrderLetterController extends Controller
     {
         $validated = $request->validate([
             'dasar_surat' => 'required|string',
+            'nomor_surat' => 'nullable|string|max:255',
             'list_petugas' => 'required|array|min:1',
             'list_petugas.*' => 'required|string',
-            'hari_tanggal_tugas' => 'required|string|max:255',
+            'hari' => 'required|string|max:255',
+            'tanggal_surat' => 'nullable|date',
             'waktu_tugas' => 'required|string|max:255',
             'tempat_tugas' => 'required|string|max:255',
             'keperluan_tugas' => 'required|string',
@@ -123,6 +127,28 @@ class TaskOrderLetterController extends Controller
             'taskOrderLetter' => $taskOrderLetter,
             'withKop' => $withKop,
         ]);
+    }
+
+    /**
+     * Return JSON data for DataTables AJAX listing.
+     */
+    public function data(Request $request)
+    {
+        $letters = TaskOrderLetter::latest()->get();
+
+        $rows = $letters->map(function ($letter) {
+            return [
+                'id' => $letter->id,
+                'tanggal_tugas' => $letter->tanggal_tugas ? (is_string($letter->tanggal_tugas) ? $letter->tanggal_tugas : $letter->tanggal_tugas->format('d M Y')) : '-',
+                'nomor' => $letter->nomor_surat ?? '-',
+                'tempat_tugas' => $letter->tempat_tugas,
+                'keperluan' => $letter->keperluan_tugas ?? $letter->keperluan,
+                'petugas' => $letter->jumlah_petugas,
+                'actions' => view('task-order-letters.partials.actions', compact('letter'))->render(),
+            ];
+        });
+
+        return response()->json(['data' => $rows]);
     }
 
     public function exportDocx(TaskOrderLetter $taskOrderLetter, Request $request)

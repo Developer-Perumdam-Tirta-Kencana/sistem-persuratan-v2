@@ -11,7 +11,33 @@
             <div class="p-6 bg-white border-b border-gray-200">
                 <form action="{{ route('task-order-letters.store') }}" method="POST" x-data="{ petugas: [''] }">
                     @csrf
-                    
+                    <div class="mb-4">
+                        <label for="nomor_surat" class="block text-gray-700 text-sm font-bold mb-2">Nomor Surat</label>
+                        <input type="text" name="nomor_surat" id="nomor_surat" value="{{ old('nomor_surat') }}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nomor_surat') border-red-500 @enderror">
+                        @error('nomor_surat')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="hari" class="block text-gray-700 text-sm font-bold mb-2">Hari *</label>
+                        <input type="text" name="hari" id="hari" value="{{ old('hari') }}" placeholder="Contoh: Rabu - Jumat"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('hari') border-red-500 @enderror" required>
+                        @error('hari')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="tanggal_surat" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Dikeluarkan (opsional)</label>
+                        <input type="date" name="tanggal_surat" id="tanggal_surat" value="{{ old('tanggal_surat') }}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('tanggal_surat') border-red-500 @enderror">
+                        @error('tanggal_surat')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="mb-4">
                         <label for="dasar_surat" class="block text-gray-700 text-sm font-bold mb-2">Dasar Surat *</label>
                         <textarea name="dasar_surat" id="dasar_surat" rows="2" 

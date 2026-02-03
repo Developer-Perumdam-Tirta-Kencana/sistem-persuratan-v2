@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('recommendation-letters/{recommendationLetter}/approve', [RecommendationLetterController::class, 'approveAction'])->name('recommendation-letters.approveAction');
     Route::post('recommendation-letters/{recommendationLetter}/reject', [RecommendationLetterController::class, 'rejectAction'])->name('recommendation-letters.rejectAction');
     
+    Route::get('task-order-letters/data', [TaskOrderLetterController::class, 'data'])->name('task-order-letters.data');
     Route::resource('task-order-letters', TaskOrderLetterController::class);
     Route::get('task-order-letters/{taskOrderLetter}/export-pdf', [TaskOrderLetterController::class, 'exportPdf'])->name('task-order-letters.exportPdf');
     Route::get('task-order-letters/{taskOrderLetter}/preview-format', [TaskOrderLetterController::class, 'previewFormat'])->name('task-order-letters.previewFormat');

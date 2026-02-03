@@ -56,6 +56,9 @@
                                         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0h16"/></svg>
                                     </div>
                                 </th>
+                                <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs" data-column="nomor">
+                                    Nomor Surat
+                                </th>
                                 <th class="px-6 py-4 text-left font-bold text-slate-700 uppercase tracking-wider text-xs cursor-pointer hover:bg-blue-200 transition" data-column="tempat_tugas">
                                     <div class="flex items-center gap-2">
                                         Tempat
@@ -77,55 +80,7 @@
                                 <th class="px-6 py-4 text-center font-bold text-slate-700 uppercase tracking-wider text-xs">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            @forelse($letters as $letter)
-                            <tr class="hover:bg-blue-50 transition-colors duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-medium text-slate-900">{{ is_string($letter->tanggal_tugas) ? $letter->tanggal_tugas : ($letter->tanggal_tugas ? $letter->tanggal_tugas->format('d M Y') : '-') }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm text-slate-700">{{ $letter->tempat_tugas }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm text-slate-700">{{ $letter->keperluan }}</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <span class="px-3 py-1 inline-flex text-xs font-semibold bg-blue-100 text-blue-800">{{ $letter->jumlah_petugas }}</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-2 flex-wrap">
-                                        <!-- View Buttons -->
-                                        <a href="{{ route('task-order-letters.previewFormat', $letter) }}?kop=1&paper=A4" target="_blank" class="inline-flex items-center px-3 py-2 text-xs font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition" title="Preview surat">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        </a>
-                                        <form action="{{ route('task-order-letters.destroy', $letter) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-16">
-                                    <div class="text-center">
-                                        <svg class="mx-auto h-12 w-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                        </svg>
-                                        <p class="text-slate-700 font-medium mb-2">Belum ada surat perintah tugas</p>
-                                        <p class="text-slate-600 text-sm mb-4">Mulai dengan membuat surat pertama Anda</p>
-                                        <a href="{{ route('task-order-letters.create') }}" class="inline-flex items-center px-4 py-2 bg-orange-600 text-white font-semibold hover:bg-orange-700 transition">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                            Buat Surat Baru
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
+                        <tbody class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
@@ -139,48 +94,69 @@
 
     <script>
         $(document).ready(function() {
-            @if($letters->count() > 0)
-            // Prevent reinitializing DataTable
+            // Initialize DataTable with AJAX source for full dataset
             if (!$.fn.DataTable.isDataTable('#taskOrderTable')) {
+                $.fn.dataTable.ext.errMode = 'none';
                 const table = $('#taskOrderTable').DataTable({
-                language: {
-                    lengthMenu: "Tampilkan _MENU_ per halaman",
-                    zeroRecords: "Tidak ada data ditemukan",
-                    info: "_START_ hingga _END_ dari _TOTAL_ surat",
-                    infoEmpty: "Tidak ada data",
-                    infoFiltered: "(disaring dari _MAX_ total)",
-                    search: "Cari:",
-                    paginate: {
-                        first: "Pertama",
-                        last: "Terakhir",
-                        next: "Selanjutnya",
-                        previous: "Sebelumnya"
+                    ajax: {
+                        url: '{!! route("task-order-letters.data") !!}',
+                        dataSrc: 'data',
+                        error: function(xhr, status, error) {
+                            console.error('DataTables AJAX error', status, error);
+                            try {
+                                console.error('Response:', xhr.responseText);
+                            } catch (e) {}
+                            // show user-friendly message
+                            alert('Gagal memuat data. Cek konsol untuk detail (status: ' + xhr.status + ').');
+                        }
+                    },
+                    columns: [
+                        { data: 'tanggal_tugas' },
+                        { data: 'nomor' },
+                        { data: 'tempat_tugas' },
+                        { data: 'keperluan', className: 'truncate-ellipsis' },
+                        { data: 'petugas', className: 'text-center' },
+                        { data: 'actions', orderable: false, searchable: false, className: 'text-center' },
+                    ],
+                    language: {
+                        lengthMenu: "Tampilkan _MENU_ per halaman",
+                        zeroRecords: "Tidak ada data ditemukan",
+                        info: "_START_ hingga _END_ dari _TOTAL_ surat",
+                        infoEmpty: "Tidak ada data",
+                        infoFiltered: "(disaring dari _MAX_ total)",
+                        search: "Cari:",
+                        paginate: {
+                            first: "Pertama",
+                            last: "Terakhir",
+                            next: "Selanjutnya",
+                            previous: "Sebelumnya"
+                        }
+                    },
+                    pageLength: 15,
+                    lengthMenu: [[10, 15, 25, 50, 100, -1], [10, 15, 25, 50, 100, "Semua"]],
+                    responsive: true,
+                    autoWidth: false,
+                    order: [[0, 'desc']],
+                    dom: 'lfrtp<"clear">',
+                    drawCallback: function() {
+                        // Hide any dropdowns after redraw
+                        document.querySelectorAll('[id^="dropdown-"]').forEach(d => d.classList.add('hidden'));
+                    },
+                    createdRow: function(row, data, dataIndex) {
+                        // ensure action HTML renders
+                        $(row).find('td').last().addClass('align-middle');
                     }
-                },
-                pageLength: 15,
-                lengthMenu: [[10, 15, 25, 50, 100, -1], [10, 15, 25, 50, 100, "Semua"]],
-                responsive: true,
-                autoWidth: false,
-                columnDefs: [
-                    { orderable: true, targets: [0, 1, 2, 3] },
-                    { orderable: false, targets: [4] }
-                ],
-                order: [[0, 'desc']],
-                dom: 'lfrtp<"clear">',
-                drawCallback: function() {
-                    // Refresh dropdown functionality after redraw
-                    document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
-                        d.classList.add('hidden');
-                    });
-                }
-            });
+                });
 
-                // Custom search with visual feedback
+                $('#taskOrderTable').on('error.dt', function(e, settings, techNote, message) {
+                    console.error('DataTable error event:', techNote, message);
+                });
+
+                // Custom search input
                 $('#taskOrderSearch').on('keyup', function() {
                     table.search(this.value).draw();
                 });
             }
-            @endif
         });
     </script>
 
@@ -224,18 +200,36 @@
             color: white;
             border-color: #2563eb;
         }
+            .truncate-ellipsis {
+                max-width: 320px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
     </style>
+    <script>
         function toggleDropdown(id) {
             const dropdown = document.getElementById('dropdown-' + id);
+            if (!dropdown) return;
             const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
             allDropdowns.forEach(d => { if (d !== dropdown) d.classList.add('hidden'); });
             dropdown.classList.toggle('hidden');
         }
 
         document.addEventListener('click', function(event) {
-            if (!event.target.closest('button[onclick^="toggleDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
+            const clickedInsideDropdown = Boolean(event.target.closest('[id^="dropdown-"]'));
+            const clickedDropdownButton = (function() {
+                const btn = event.target.closest('button');
+                if (!btn) return false;
+                const onclick = btn.getAttribute('onclick') || '';
+                const dataToggle = btn.getAttribute('data-toggle');
+                return onclick.includes('toggleDropdown') || dataToggle === 'dropdown';
+            })();
+
+            if (!clickedInsideDropdown && !clickedDropdownButton) {
                 document.querySelectorAll('[id^="dropdown-"]').forEach(d => d.classList.add('hidden'));
             }
         });
+    </script>
     </script>
 </x-app-layout>

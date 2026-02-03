@@ -17,7 +17,7 @@
         }
         .kop-surat {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 0;
         }
         .kop-surat img {
             width: 100%;
@@ -38,7 +38,9 @@
         }
         .content {
             text-align: justify;
-            margin: 20px 0;
+            margin-top: 10px;
+            padding: 0 48px;
+            box-sizing: border-box;
         }
         .table-data {
             width: 100%;
@@ -51,8 +53,6 @@
             margin-top: 50px;
             text-align: right;
         }
-                padding: 0 40px;
-                box-sizing: border-box;
         .ttd-space {
             margin-top: 80px;
         }
@@ -126,10 +126,13 @@
     </div>
 
     <div class="ttd">
-        <p>Surabaya, {{ $letter->tanggal_surat->format('d F Y') }}</p>
+        <p>{{ \App\Models\SystemSetting::get('district', 'Kabupaten Jombang') }}, {{ $letter->tanggal_surat->format('d F Y') }}</p>
         <p><strong>Hormat kami,</strong></p>
+        <p><strong>{{ \App\Models\SystemSetting::get('company_line1', 'Perusahaan Umum Daerah Air Minum') }}</strong></p>
+        <p><strong>{{ \App\Models\SystemSetting::get('company_line2', 'Tirta Kencana Jombang') }}</strong></p>
         <div class="ttd-space"></div>
-        <p><strong><u>Direktur PDAM Tirta Kencana</u></strong></p>
+        <p><strong>{{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM. S.Pd, M.Pd') }}</strong></p>
+        <p>NIP. {{ \App\Models\SystemSetting::get('director_nip', '19800815 202502 1 001') }}</p>
         @if($letter->status === 'disetujui' && $letter->approver)
         <hr style="margin-top: 40px; margin-bottom: 20px;">
         <p style="font-size: 10pt; color: #666;">
