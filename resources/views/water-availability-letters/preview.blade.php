@@ -27,8 +27,8 @@
                     </div>
 
                     <div class="mt-6 inline-flex rounded-lg border border-gray-200 overflow-hidden">
-                        <a href="{{ route('water-availability-letters.previewFormat', [$waterAvailabilityLetter, 'kop' => 1]) }}" class="px-4 py-2 text-sm font-medium transition border-r border-gray-200 {{ $withKop ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }}">Dengan Kop</a>
-                        <a href="{{ route('water-availability-letters.previewFormat', [$waterAvailabilityLetter, 'kop' => 0]) }}" class="px-4 py-2 text-sm font-medium transition {{ !$withKop ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }}">Tanpa Kop</a>
+                        <a href="{{ route('water-availability-letters.previewFormat', [$waterAvailabilityLetter, 'kop' => 1, 'paper' => 'F4']) }}" class="px-4 py-2 text-sm font-medium transition border-r border-gray-200 {{ $withKop ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }}">Dengan Kop</a>
+                        <a href="{{ route('water-availability-letters.previewFormat', [$waterAvailabilityLetter, 'kop' => 0, 'paper' => 'F4']) }}" class="px-4 py-2 text-sm font-medium transition {{ !$withKop ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }}">Tanpa Kop</a>
                     </div>
 
                     <dl class="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
@@ -67,7 +67,7 @@
                     <div class="mt-8 pt-6 border-t border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Pratinjau Dokumen</h3>
                         <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                            <iframe src="{{ route('water-availability-letters.previewFormat', [$waterAvailabilityLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0']) }}"
+                                <iframe src="{{ route('water-availability-letters.previewFormat', [$waterAvailabilityLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0', 'paper' => 'F4']) }}"
                                     class="w-full border-0"
                                     style="height: 700px;"
                                     frameborder="0"></iframe>

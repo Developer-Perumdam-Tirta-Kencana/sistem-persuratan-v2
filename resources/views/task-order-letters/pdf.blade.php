@@ -5,7 +5,7 @@
     <title>Surat Perintah Tugas</title>
     <style>
         @page {
-            margin: 1.5cm 2cm 2cm 2cm;
+            margin: 0;
             size: {{ $paperSize ?? 'A4' }};
         }
         body {
@@ -13,13 +13,12 @@
             font-size: 12pt;
             line-height: 1.6;
             color: #000;
+            margin: 0;
+            padding: 0;
         }
         .kop-surat {
             text-align: center;
             margin-bottom: 20px;
-            margin-left: -2cm;
-            margin-right: -2cm;
-            margin-top: -1.5cm;
         }
         .kop-surat img {
             width: 100%;
@@ -27,6 +26,8 @@
         }
         .content {
             margin-top: 20px;
+            padding: 0 40px;
+            box-sizing: border-box;
         }
         .title {
             text-align: center;

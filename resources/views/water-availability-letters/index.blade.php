@@ -264,7 +264,14 @@
         // F4 shortcut untuk view pertama dengan kop
         document.addEventListener('keydown', function(event) {
             if (event.key === 'F4') {
-    <script>
+                event.preventDefault();
+                const firstKopButton = document.querySelector('.kop-button');
+                if (firstKopButton) {
+                    firstKopButton.click();
+                }
+            }
+        });
+
         // Toggle dropdown function
         function toggleDropdown(id) {
             const dropdown = document.getElementById('dropdown-' + id);
@@ -284,16 +291,6 @@
                 document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
                     d.classList.add('hidden');
                 });
-            }
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'F4') {
-                event.preventDefault();
-                const firstKopButton = document.querySelector('.kop-button');
-                if (firstKopButton) {
-                    firstKopButton.click();
-                }
             }
         });
     </script>

@@ -120,7 +120,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <div class="flex justify-center gap-2 flex-wrap">
                                         <!-- View Dropdown -->
-                                        <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=1&paper=A4" target="_blank" class="inline-flex items-center px-3 py-2 text-xs font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition" title="Preview surat">
+                                        <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=1&paper=F4" target="_blank" class="inline-flex items-center px-3 py-2 text-xs font-medium text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded transition" title="Preview surat">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                         </a>
                                         @if($letter->status === 'menunggu_acc')
@@ -214,133 +214,6 @@
                     table.search(this.value).draw();
                 });
             }
-            @endif
-        });
-    </script>
-
-                            @forelse($letters as $letter)
-                            <tr class="hover:bg-blue-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-medium text-gray-900">{{ $letter->instansi_tujuan }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="text-sm text-gray-700">{{ $letter->jenis_pekerjaan }}</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-sm text-gray-700">{{ is_string($letter->hari_tanggal_pelaksanaan) ? $letter->hari_tanggal_pelaksanaan : ($letter->hari_tanggal_pelaksanaan ? $letter->hari_tanggal_pelaksanaan->format('d M Y') : '-') }}</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($letter->status === 'menunggu_acc')
-                                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-semibold">Menunggu</span>
-                                    @elseif($letter->status === 'disetujui')
-                                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Disetujui</span>
-                                    @elseif($letter->status === 'ditolak')
-                                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">Ditolak</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex justify-center gap-2 flex-wrap">
-                                        <!-- View Buttons with Paper Size Options -->
-                                        <div class="relative inline-block text-left">
-                                            <button onclick="toggleDropdown({{ $letter->id }})" class="inline-flex items-center px-4 py-2 text-xs font-medium text-blue-600 hover:bg-blue-50 border border-gray-300 rounded-lg shadow-sm bg-white transition">
-                                                📄 Lihat Surat
-                                                <svg class="ml-2 -mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                                </svg>
-                                            </button>
-                                            <div id="dropdown-{{ $letter->id }}" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-                                                <div class="py-1">
-                                                    <div class="px-4 py-2 text-xs font-semibold text-gray-700 border-b">Dengan Kop</div>
-                                                    <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=1&paper=F4" target="_blank" class="flex items-center px-4 py-2 text-xs text-gray-700 hover:bg-blue-50">
-                                                        <span class="mr-2">📄</span> F4 (Folio)
-                                                    </a>
-                                                    <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=1&paper=A4" target="_blank" class="flex items-center px-4 py-2 text-xs text-gray-700 hover:bg-blue-50">
-                                                        <span class="mr-2">📄</span> A4
-                                                    </a>
-                                                    <div class="px-4 py-2 text-xs font-semibold text-gray-700 border-b border-t mt-1">Tanpa Kop</div>
-                                                    <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=0&paper=F4" target="_blank" class="flex items-center px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">
-                                                        <span class="mr-2">📋</span> F4 (Folio)
-                                                    </a>
-                                                    <a href="{{ route('job-notification-letters.previewFormat', $letter) }}?kop=0&paper=A4" target="_blank" class="flex items-center px-4 py-2 text-xs text-gray-700 hover:bg-gray-50">
-                                                        <span class="mr-2">📋</span> A4
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @if($letter->status === 'menunggu_acc')
-                                        <a href="{{ route('job-notification-letters.edit', $letter) }}" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition" title="Edit surat">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                        </a>
-                                        <form action="{{ route('job-notification-letters.destroy', $letter) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus surat">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                            </button>
-                                        </form>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="px-6 py-12">
-                                    <div class="text-center">
-                                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                        </svg>
-                                        <p class="text-gray-700 font-medium mb-2">Belum ada surat notifikasi pekerjaan</p>
-                                        <p class="text-gray-600 text-sm mb-4">Mulai dengan membuat surat pertama Anda</p>
-                                        <a href="{{ route('job-notification-letters.create') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                            Buat Surat Baru
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.tailwindcss.min.css">
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.tailwindcss.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            @if($letters->count() > 0)
-            $('#jobNotificationTable').DataTable({
-                language: {
-                    lengthMenu: "Tampilkan _MENU_ per halaman",
-                    zeroRecords: "Tidak ada data",
-                    info: "_START_ hingga _END_ dari _TOTAL_ surat",
-                    infoEmpty: "Tidak ada data",
-                    infoFiltered: "(disaring dari _MAX_ total)",
-                    search: "Cari:",
-                    paginate: {
-                        first: "Pertama",
-                        last: "Terakhir",
-                        next: "Selanjutnya",
-                        previous: "Sebelumnya"
-                    }
-                },
-                pageLength: 15,
-                lengthMenu: [[10, 15, 25, 50, 100, -1], [10, 15, 25, 50, 100, "Semua"]],
-                responsive: true,
-                autoWidth: false,
-                ordering: true,
-                searching: true,
-                paging: true,
-                info: true,
-                dom: '<"flex justify-between items-center mb-4"lf>rt<"flex justify-between items-center mt-4"ip>',
-                columnDefs: [
-                    { className: "text-center", targets: [3] }
-                ]
-            });
             @endif
         });
     </script>

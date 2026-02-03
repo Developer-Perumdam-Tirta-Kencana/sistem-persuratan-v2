@@ -17,15 +17,8 @@
 
             <!-- Right Navigation -->
             <div class="flex items-center space-x-6">
-                <!-- Sidebar Toggle Button -->
-                <button id="sidebarToggle" class="md:hidden p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Toggle Sidebar">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-
-                <!-- Desktop Sidebar Toggle -->
-                <button id="sidebarToggleDesktop" class="hidden md:block p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Toggle Sidebar">
+                <!-- Desktop Sidebar Toggle (Hidden on Mobile) -->
+                <button id="sidebarToggle" class="hidden md:block p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Toggle Sidebar">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -208,7 +201,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebarToggleDesktop = document.getElementById('sidebarToggleDesktop');
         const closeSidebar = document.getElementById('closeSidebar');
         const sidebar = document.getElementById('navigationSidebar');
         const overlay = document.getElementById('sidebarOverlay');
@@ -229,10 +221,6 @@
 
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', openSidebar);
-        }
-
-        if (sidebarToggleDesktop) {
-            sidebarToggleDesktop.addEventListener('click', openSidebar);
         }
 
         if (closeSidebar) {
