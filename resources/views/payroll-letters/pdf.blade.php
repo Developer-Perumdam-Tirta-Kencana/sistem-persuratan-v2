@@ -5,29 +5,31 @@
     <title>Surat Payroll - {{ $letter->nomor_surat }}</title>
     <style>
         @page {
+            size: 210mm 330mm; /* F4 */
             margin: 0;
-            size: {{ $paperSize ?? 'A4' }};
         }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
         }
+
         .kop-surat img {
             width: 100%;
             display: block;
         }
+
         .garis-kop {
-            border-top: 3px solid #000;
-            border-bottom: 1px solid #000;
-            margin: 10px 0 20px 0;
+            display: none; /* aman, kop sudah bergaris */
         }
+
         .content {
             padding: 0 48px;
+            margin-top: 0;
             text-align: justify;
         }
+
         .meta-table {
             width: 100%;
             margin-bottom: 20px;
@@ -58,7 +60,6 @@
     <div class="kop-surat">
         <img src="{{ $kopBase64 }}" alt="Kop Surat">
     </div>
-    <div class="garis-kop"></div>
 @endif
 
 <div class="content">
@@ -121,22 +122,62 @@
         kerjasamanya kami sampaikan terima kasih.
     </p>
 
-    <table class="ttd-area">
-        <tr>
-            <td width="50%" style="text-align:center;">
-                Mengetahui,<br>
-                <strong>Direktur</strong><br>
-                {{ \App\Models\SystemSetting::get('company_line2') }}<br><br><br><br>
-                <strong>{{ \App\Models\SystemSetting::get('director_name') }}</strong><br>
-                NIP. {{ \App\Models\SystemSetting::get('director_nip') }}
-            </td>
-            <td width="50%" style="text-align:center;">
-                Manajer Administrasi & Keuangan<br><br><br><br><br>
-                <strong>{{ \App\Models\SystemSetting::get('finance_manager_name', 'NORMA DIARINI, S.Sos') }}</strong><br>
-                NIP. {{ \App\Models\SystemSetting::get('finance_manager_nip', '19731228 200012 2 041') }}
-            </td>
-        </tr>
-    </table>
+<table class="ttd-area" width="100%" cellspacing="0" cellpadding="6"
+       style="border-collapse: collapse; margin-top: 40px;">
+
+    <!-- ROW 1 -->
+    <tr>
+        <td width="50%" style="text-align:center;">
+            Mengetahui:
+        </td>
+        <td width="50%"></td>
+    </tr>
+
+    <!-- ROW 2 -->
+    <tr>
+        <td style="text-align:center;">
+            Direktur
+        </td>
+        <td></td>
+    </tr>
+
+    <!-- ROW 3 -->
+    <tr>
+        <td style="text-align:center;">
+            {{ \App\Models\SystemSetting::get('company_line2') }}<br>
+            KABUPATEN JOMBANG
+        </td>
+        <td style="text-align:center; vertical-align:bottom;">
+            Manajer Administrasi &amp; Keuangan
+        </td>
+    </tr>
+
+    <!-- ROW 4 (SPASI TTD) -->
+    <tr>
+        <td style="height:70px;"></td>
+        <td></td>
+    </tr>
+
+    <!-- ROW 5 (NAMA) -->
+    <tr>
+        <td style="text-align:center;">
+            <strong style="text-decoration: underline;">
+                {{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM, S.Pd, M.Pd') }}
+            </strong><br>
+            NIP. {{ \App\Models\SystemSetting::get('director_nip', '19650415 198703 1 001') }}
+        </td>
+        <td style="text-align:center;">
+            <strong style="text-decoration: underline;">
+                {{ \App\Models\SystemSetting::get('finance_manager_name', 'NORMA DIARINI, S.Sos') }}
+            </strong><br>
+            NIP. {{ \App\Models\SystemSetting::get('finance_manager_nip', '19731228 200012 2 041') }}
+        </td>
+    </tr>
+
+</table>
+
+
+
 
 </div>
 
