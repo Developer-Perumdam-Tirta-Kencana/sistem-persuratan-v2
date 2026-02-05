@@ -106,14 +106,27 @@ class PayrollLetterController extends Controller
         $withKop = $request->query('kop', '1') === '1';
         $paperSize = $request->query('paper', 'A4');
 
+        // Mode PDF: Generate & stream PDF menggunakan Dompdf
         if ($mode === 'pdf') {
-            return view('payroll-letters.pdf', [
+            $pdf = Pdf::loadView('payroll-letters.pdf', [
                 'letter' => $payrollLetter,
                 'withKop' => $withKop,
                 'paperSize' => $paperSize,
             ]);
+
+            // Set custom paper size untuk F4
+            if ($paperSize === 'F4') {
+                // F4: 210mm x 330mm = 595.27pt x 935.43pt
+                $pdf->setPaper([0, 0, 595.27, 935.43], 'portrait');
+            } else {
+                $pdf->setPaper($paperSize, 'portrait');
+            }
+
+            // Stream PDF inline (bukan download)
+            return $pdf->stream('payroll-' . $payrollLetter->nomor_surat . '.pdf');
         }
 
+        // Mode page: Return preview page dengan iframe PDF
         return view('payroll-letters.preview', [
             'letter' => $payrollLetter,
             'payrollLetter' => $payrollLetter,

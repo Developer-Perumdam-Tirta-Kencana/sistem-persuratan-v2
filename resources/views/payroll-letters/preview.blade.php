@@ -58,13 +58,27 @@
                         </div>
                     </dl>
 
+                    <!-- PDF Viewer Section -->
                     <div class="mt-8 pt-6 border-t border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Pratinjau Dokumen</h3>
-                        <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                                <iframe src="{{ route('payroll-letters.previewFormat', [$payrollLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0', 'paper' => 'F4']) }}"
-                                    class="w-full border-0"
-                                    style="height: 700px;"
-                                    frameborder="0"></iframe>
+                        
+                        <!-- PDF Viewer Container - Gray background with white paper effect -->
+                        <div class="bg-gray-300 rounded-lg p-4" style="min-height: 850px;">
+                            <div class="flex items-center justify-center h-full">
+                                <div class="w-full max-w-2xl">
+                                    <iframe 
+                                        src="{{ route('payroll-letters.previewFormat', [$payrollLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0', 'paper' => 'F4']) }}"
+                                        class="w-full rounded-lg shadow-2xl"
+                                        style="
+                                            height: 800px;
+                                            border: none;
+                                            background: white;
+                                        "
+                                        frameborder="0"
+                                        allow="fullscreen">
+                                    </iframe>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

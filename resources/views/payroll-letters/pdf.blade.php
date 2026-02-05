@@ -15,9 +15,14 @@
             line-height: 1.6;
         }
 
+        .kop-surat {
+            margin-bottom: 0;
+        }
+
         .kop-surat img {
             width: 100%;
             display: block;
+            margin-bottom: 0;
         }
 
         .garis-kop {
@@ -26,7 +31,7 @@
 
         .content {
             padding: 0 48px;
-            margin-top: 0;
+            margin-top: -50px;
             text-align: justify;
         }
 
