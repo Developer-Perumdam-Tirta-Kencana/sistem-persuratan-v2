@@ -5,54 +5,45 @@
     <title>Surat Perintah Tugas</title>
     <style>
         @page {
-            margin: 20mm;
-            size: {{ $paperSize ?? 'A4' }};
+            size: 210mm 330mm; /* F4 */
+            margin: 0;
         }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
-            line-height: 1.6;
-            color: #000;
-            margin: 0;
-            padding: 0;
+            line-height: 1.45;
         }
+
         .kop-surat {
-            text-align: center;
             margin-bottom: 0;
         }
+
         .kop-surat img {
             width: 100%;
             display: block;
+            margin-bottom: 0;
         }
-        /* full-bleed kop for PDF: extend image outside page margins */
-        .kop-surat.full-bleed {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: calc(100% + 40mm);
-            margin-left: -20mm;
+
+        .garis-kop {
+            display: none; /* aman, kop sudah bergaris */
         }
-        .kop-surat.full-bleed img {
-            width: 100%;
-            display: block;
-        }
+
         .content {
-            margin-top: 10px;
-            padding: 0 24px;
-            box-sizing: border-box;
-            /* ensure content doesn't overflow page in PDF render */
-            overflow: visible;
+            padding: 0 48px;
+            margin-top: -25%;
+            text-align: justify;
         }
         .title {
             text-align: center;
             font-weight: bold;
             text-decoration: underline;
-            margin: 20px 0;
+            margin: 14px 0 6px;
             font-size: 14pt;
         }
         .nomor-center {
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 11pt;
         }
         .nomor {
@@ -61,7 +52,7 @@
         }
         .body-text {
             text-align: justify;
-            margin: 15px 0;
+            margin: 10px 0;
         }
         .indent {
             margin-left: 40px;
@@ -82,10 +73,21 @@
         /* fixed signature anchored to page bottom-right for PDF */
         .signature-fixed {
             position: fixed;
-            right: 20mm;
-            bottom: 20mm;
-            width: 45%;
+            right: 24mm;
+            bottom: 18mm;
+            width: 42%;
             text-align: right;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 11pt;
+        }
+        .signature-fixed p {
+            margin: 2px 0;
+            line-height: 1.3;
+        }
+        .signature-name {
+            margin-top: 50px;
+            font-weight: bold;
+            text-decoration: underline;
         }
         table {
             width: 100%;
@@ -114,24 +116,53 @@
             background-color: #f3f4f6;
             font-weight: bold;
         }
-        .petugas-columns {
-            -webkit-column-width: 220px;
-            -moz-column-width: 220px;
-            column-width: 220px;
-            column-gap: 24px;
-            -webkit-column-gap: 24px;
-            -moz-column-gap: 24px;
-            padding-left: 20px;
+        .petugas-list {
+            margin: 0;
+            padding-left: 24px;
+            width: 100%;
         }
-        .petugas-columns li {
-            break-inside: avoid;
-            -webkit-column-break-inside: avoid;
-            -moz-column-break-inside: avoid;
-            margin-bottom: 6px;
+        .petugas-list li {
+            margin-bottom: 3px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+        .petugas-columns-2 {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .petugas-columns-2 td {
+            vertical-align: top;
+            width: 50%;
+            padding-right: 24px;
+        }
+        .petugas-columns-2 ol {
+            margin: 0;
+            padding-left: 24px;
+        }
+        .petugas-columns-2 li {
+            margin-bottom: 3px;
+            font-weight: 600;
+            line-height: 1.35;
         }
         .dasar-full {
             width: 100%;
             margin-bottom: 8px;
+        }
+        .dasar-full p {
+            margin: 0;
+            line-height: 1.45;
+            text-align: justify;
+        }
+        .kepada-section {
+            margin: 12px 0;
+        }
+        .detail-table {
+            margin-top: 8px;
+            width: 100%;
+        }
+        .detail-table td {
+            padding: 2px 0;
+            vertical-align: top;
         }
     </style>
 </head>
@@ -152,7 +183,7 @@
     </div>
     <div style="height: 140px;"></div>
     @else
-    <div class="kop-surat" style="height: 120px;"></div>
+    <div class="kop-surat" style="height: 200px;"></div>
     @endif
 
     <div class="content">
@@ -170,90 +201,103 @@
             <div class="body-text">
                 <p style="margin-bottom:6px;"><strong>DASAR</strong></p>
                 <div class="dasar-full">
-                    <p style="text-align:justify; margin:0;">{!! nl2br(e($letter->dasar_surat)) !!}</p>
+                    <p>{!! nl2br(e($letter->dasar_surat)) !!}</p>
                 </div>
 
-                <p style="margin-top:6px; margin-bottom:6px;"><strong>MEMERINTAHKAN :</strong></p>
+                <p style="margin-top:10px; margin-bottom:4px;"><strong>Memerintahkan :</strong></p>
 
                 @php
                     $listPetugas = is_array($letter->list_petugas) ? $letter->list_petugas : (is_string($letter->list_petugas) ? json_decode($letter->list_petugas, true) : []);
                     $petugasCount = count($listPetugas);
                 @endphp
-                <div style="margin-bottom:8px;">
+                <div style="margin-bottom:4px;">
                     @if($petugasCount > 10)
                         @php
-                            $half = (int) ceil($petugasCount / 2);
-                            $left = array_slice($listPetugas, 0, $half);
-                            $right = array_slice($listPetugas, $half);
+                            $left = array_slice($listPetugas, 0, 10);
+                            $right = array_slice($listPetugas, 10);
                         @endphp
-                        <div style="display:flex; gap:24px;">
-                            <ol style="margin:0; padding-left:18px; width:50%;">
-                                @foreach($left as $index => $petugas)
-                                    @php $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas; @endphp
-                                    <li style="margin-bottom:4px; font-weight:600;">{{ strtoupper($name) }}</li>
-                                @endforeach
-                            </ol>
-                            <ol start="{{ $half + 1 }}" style="margin:0; padding-left:18px; width:50%;">
-                                @foreach($right as $index => $petugas)
-                                    @php $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas; @endphp
-                                    <li style="margin-bottom:4px; font-weight:600;">{{ strtoupper($name) }}</li>
-                                @endforeach
-                            </ol>
-                        </div>
+                        <table class="petugas-columns-2" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>
+                                    <ol style="margin:0; padding-left:20px;">
+                                        @foreach($left as $petugas)
+                                            @php 
+                                                $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas;
+                                                $name = ucwords(strtolower(trim($name)));
+                                            @endphp
+                                            <li>{{ $name }}</li>
+                                        @endforeach
+                                    </ol>
+                                </td>
+                                <td>
+                                    <ol start="11" style="margin:0; padding-left:20px;">
+                                        @foreach($right as $petugas)
+                                            @php 
+                                                $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas;
+                                                $name = ucwords(strtolower(trim($name)));
+                                            @endphp
+                                            <li>{{ $name }}</li>
+                                        @endforeach
+                                    </ol>
+                                </td>
+                            </tr>
+                        </table>
                     @else
-                        <ol style="margin:0; padding-left:18px;">
-                            @foreach($listPetugas as $index => $petugas)
-                                @php $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas; @endphp
-                                <li style="margin-bottom:4px; font-weight:600;">{{ strtoupper($name) }}</li>
+                        <ol class="petugas-list">
+                            @foreach($listPetugas as $petugas)
+                                @php 
+                                    $name = is_array($petugas) ? ($petugas['name'] ?? $petugas['nama'] ?? '') : (string)$petugas;
+                                    $name = ucwords(strtolower(trim($name)));
+                                @endphp
+                                <li>{{ $name }}</li>
                             @endforeach
                         </ol>
                     @endif
                 </div>
 
-                <p style="margin-top:6px; margin-bottom:12px;"><strong>Kepada</strong>
-                <span style="margin-left:8px;">&nbsp;</span></p>
+                <p style="margin:10px 0 4px;"><strong>Kepada:</strong></p>
 
-                <div style="margin-top:4px;">
-                    <table class="no-border">
+                <div style="margin-top:2px;">
+                    <table class="no-border detail-table">
                         <tr>
-                            <td style="width:80px;">Hari</td>
+                            <td style="width:70px;">Hari</td>
                             <td style="width:8px;">:</td>
-                            <td>{{ $letter->hari ?? '' }}</td>
+                            <td style="padding-left:8px;">{{ $letter->hari ?? '' }}</td>
                         </tr>
                         <tr>
                             <td>Tanggal</td>
                             <td>:</td>
-                            <td>{{ $letter->tanggal_surat ? $letter->tanggal_surat->format('d F Y') : '' }}</td>
+                            <td style="padding-left:8px;">{{ $letter->tanggal_surat ? $letter->tanggal_surat->format('d F Y') : '' }}</td>
                         </tr>
                         <tr>
                             <td>Pukul</td>
                             <td>:</td>
-                            <td>{{ $letter->waktu_tugas }}</td>
+                            <td style="padding-left:8px;">{{ $letter->waktu_tugas }}</td>
                         </tr>
                         <tr>
                             <td>Tempat</td>
                             <td>:</td>
-                            <td>{{ $letter->tempat_tugas }}</td>
+                            <td style="padding-left:8px;">{{ $letter->tempat_tugas }}</td>
                         </tr>
                         <tr>
-                            <td>Keperluan</td>
-                            <td>:</td>
-                            <td style="text-align:justify;">{{ $letter->keperluan_tugas }}</td>
+                            <td style="vertical-align:top;">Keperluan</td>
+                            <td style="vertical-align:top;">:</td>
+                            <td style="padding-left:8px; text-align:justify;">{{ $letter->keperluan_tugas }}</td>
                         </tr>
                     </table>
                 </div>
 
-                <p style="margin-top:12px;">Demikian Surat Perintah Tugas ini untuk dilaksanakan dengan penuh tanggung jawab.</p>
+                <p style="margin-top:10px;">Demikian Surat Perintah Tugas ini untuk dilaksanakan dengan penuh tanggung jawab.</p>
             </div>
 
-                    <div style="margin-top:18px; position:relative; min-height:120px;">
+                    <div style="margin-top:16px; position:relative; min-height:120px;">
                         <div class="signature-fixed">
-                            <p style="margin:0;">Dikeluarkan di : {{ \App\Models\SystemSetting::get('district', 'Jombang') }}</p>
-                            <p style="margin:0;">Pada Tanggal  : {{ $letter->tanggal_surat ? $letter->tanggal_surat->format('d F Y') : \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                            <p style="margin:6px 0 8px;">--------------------------------------------</p>
-                            <p style="margin:0; font-weight:700;">{{ \App\Models\SystemSetting::get('company_line1', 'Perusahaan Umum Daerah Air Minum') }}</p>
+                            <p>Dikeluarkan di : {{ \App\Models\SystemSetting::get('district', 'Jombang') }}</p>
+                            <p>Pada Tanggal  : {{ $letter->tanggal_surat ? $letter->tanggal_surat->format('d F Y') : \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                            <p style="margin-top:10px; border-bottom:1px solid #000; height:40px;"></p>
+                            <p style="margin-top:4px; font-weight:700;">{{ \App\Models\SystemSetting::get('company_line1', 'Perusahaan Umum Daerah Air Minum') }}</p>
                             <p style="margin:0; font-weight:700;">{{ \App\Models\SystemSetting::get('company_line2', 'Tirta Kencana Kab. Jombang') }}</p>
-                            <p style="margin:6px 0 0; font-weight:700;">{{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM. S.Pd, M.Pd') }}</p>
+                            <p style="margin-top:2px; font-weight:700;">{{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM. S.Pd, M.Pd') }}</p>
                             <p style="margin:0;">NIP. {{ \App\Models\SystemSetting::get('director_nip', '19800815 202502 1 001') }}</p>
                         </div>
                     </div>

@@ -104,7 +104,7 @@ class TaskOrderLetterController extends Controller
         
         $pdf->setPaper($paperSize, 'portrait');
         
-        $filename = 'Surat_Perintah_Tugas_' . date('Y-m-d') . '.pdf';
+        $filename = 'Surat_Perintah_Tugas_' . $taskOrderLetter->id . '.pdf';
         return $pdf->download($filename);
     }
 
@@ -115,11 +115,19 @@ class TaskOrderLetterController extends Controller
         $paperSize = $request->query('paper', 'A4');
 
         if ($mode === 'pdf') {
-            return view('task-order-letters.pdf', [
+            $pdf = Pdf::loadView('task-order-letters.pdf', [
                 'letter' => $taskOrderLetter,
                 'withKop' => $withKop,
                 'paperSize' => $paperSize,
             ]);
+
+            if ($paperSize === 'F4') {
+                $pdf->setPaper([0, 0, 595.27, 935.43], 'portrait');
+            } else {
+                $pdf->setPaper($paperSize, 'portrait');
+            }
+
+            return $pdf->stream('task-order-' . $taskOrderLetter->nomor_surat . '.pdf');
         }
 
         return view('task-order-letters.preview', [
@@ -163,7 +171,7 @@ class TaskOrderLetterController extends Controller
         $section = $phpWord->addSection();
         PhpWordHtml::addHtml($section, $html, false, false);
 
-        $filename = 'Surat_Perintah_Tugas_' . date('Y-m-d') . '.docx';
+        $filename = 'Surat_Perintah_Tugas_' . $taskOrderLetter->id . '.docx';
         $tempDir = storage_path('app/temp');
         if (!is_dir($tempDir)) {
             mkdir($tempDir, 0777, true);

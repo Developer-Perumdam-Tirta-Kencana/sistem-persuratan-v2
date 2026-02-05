@@ -53,7 +53,8 @@
                 <div class="mt-8 pt-6 border-t border-slate-200">
                     <h3 class="text-lg font-semibold text-slate-900 mb-4">Pratinjau Dokumen</h3>
                     <div class="bg-slate-50 overflow-hidden border border-slate-200">
-                        <iframe src="{{ route('job-notification-letters.previewFormat', $jobNotificationLetter) }}" 
+                        @php($withKop = $withKop ?? true)
+                        <iframe src="{{ route('job-notification-letters.previewFormat', [$jobNotificationLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0']) }}" 
                                 class="w-full border-0" 
                                 style="height: 600px;"
                                 frameborder="0">

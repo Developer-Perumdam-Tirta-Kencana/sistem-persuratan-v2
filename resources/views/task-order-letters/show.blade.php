@@ -57,7 +57,8 @@
                 <div class="mt-8 pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Pratinjau Dokumen</h3>
                     <div class="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                        <iframe src="{{ route('task-order-letters.previewFormat', $taskOrderLetter) }}" 
+                        @php($withKop = $withKop ?? true)
+                        <iframe src="{{ route('task-order-letters.previewFormat', [$taskOrderLetter, 'mode' => 'pdf', 'kop' => $withKop ? '1' : '0']) }}" 
                                 class="w-full border-0" 
                                 style="height: 600px;"
                                 frameborder="0">

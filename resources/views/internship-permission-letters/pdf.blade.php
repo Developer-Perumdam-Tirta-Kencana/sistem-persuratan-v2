@@ -5,29 +5,34 @@
     <title>Surat Izin Magang/PKL</title>
     <style>
         @page {
+            size: 210mm 330mm; /* F4 */
             margin: 0;
-            size: {{ $paperSize ?? 'A4' }};
         }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
             line-height: 1.6;
-            color: #000;
-            margin: 0;
-            padding: 0;
         }
+
         .kop-surat {
-            text-align: center;
             margin-bottom: 0;
         }
+
         .kop-surat img {
             width: 100%;
             display: block;
+            margin-bottom: 0;
         }
+
+        .garis-kop {
+            display: none; /* aman, kop sudah bergaris */
+        }
+
         .content {
-            margin-top: 10px;
             padding: 0 48px;
-            box-sizing: border-box;
+            margin-top: -50px;
+            text-align: justify;
         }
         .title {
             text-align: center;
