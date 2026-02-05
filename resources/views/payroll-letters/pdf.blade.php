@@ -31,7 +31,6 @@
 
         .content {
             padding: 0 48px;
-            margin-top: -50px;
             text-align: justify;
         }
 
@@ -67,7 +66,7 @@
     </div>
 @endif
 
-<div class="content">
+<div class="content" style="margin-top: {{ $withKop ? '-50px' : '50px' }};">
 
     <p style="text-align:right;">
         {{ \App\Models\SystemSetting::get('district', 'Jombang') }},
