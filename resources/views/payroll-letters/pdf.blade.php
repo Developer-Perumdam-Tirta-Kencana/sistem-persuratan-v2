@@ -15,10 +15,6 @@
             line-height: 1.6;
         }
 
-        .kop-surat {
-            margin-bottom: 40px;
-        }
-
         .kop-surat img {
             width: 100%;
             display: block;
@@ -66,7 +62,7 @@
     </div>
 @endif
 
-<div class="content" style="margin-top: {{ $withKop ? '-50px' : '50px' }};">
+<div class="content" style="margin-top: {{ $withKop ? '-20px' : '50px' }};">
 
     <p style="text-align:right;">
         {{ \App\Models\SystemSetting::get('district', 'Jombang') }},

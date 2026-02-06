@@ -10,21 +10,20 @@
         }
 
         body {
-            font-family: "Times New Roman", Times, serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
             line-height: 1.6;
         }
-        .kop-surat {
-            margin-bottom: 40px;
-        }
+
         .kop-surat img {
             width: 100%;
             display: block;
+            margin-bottom: 0;
         }
 
         .content {
             padding: 0 48px;
-            margin-top: -40px;
+            text-align: justify;
         }
 
         .right {
@@ -100,7 +99,7 @@
 </div>
 @endif
 
-<div class="content">
+<div class="content" style="margin-top: {{ $withKop ? '0px' : '50px' }};">
 
     <div class="right">
         {{ \App\Models\SystemSetting::get('district','Kabupaten Jombang') }},
