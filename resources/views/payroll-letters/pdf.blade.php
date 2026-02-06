@@ -16,7 +16,7 @@
         }
 
         .kop-surat {
-            margin-bottom: 0;
+            margin-bottom: 40px;
         }
 
         .kop-surat img {
@@ -148,8 +148,7 @@
     <!-- ROW 3 -->
     <tr>
         <td style="text-align:center;">
-            {{ \App\Models\SystemSetting::get('company_line2') }}<br>
-            KABUPATEN JOMBANG
+            {{ \App\Models\SystemSetting::get('company_line2') }}
         </td>
         <td style="text-align:center; vertical-align:bottom;">
             Manajer Administrasi &amp; Keuangan

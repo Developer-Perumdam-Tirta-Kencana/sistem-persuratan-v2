@@ -2,213 +2,203 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Surat Izin Magang/PKL</title>
+    <title>Surat Persetujuan Magang/PKL</title>
     <style>
         @page {
-            size: 210mm 330mm; /* F4 */
+            size: 210mm 330mm;
             margin: 0;
         }
 
         body {
-            font-family: 'Times New Roman', Times, serif;
+            font-family: "Times New Roman", Times, serif;
             font-size: 12pt;
             line-height: 1.6;
         }
-
         .kop-surat {
-            margin-bottom: 0;
+            margin-bottom: 40px;
         }
-
         .kop-surat img {
             width: 100%;
             display: block;
-            margin-bottom: 0;
-        }
-
-        .garis-kop {
-            display: none; /* aman, kop sudah bergaris */
         }
 
         .content {
             padding: 0 48px;
-            margin-top: -50px;
-            text-align: justify;
+            margin-top: -40px;
         }
-        .title {
-            text-align: center;
-            font-weight: bold;
-            text-decoration: underline;
-            margin: 20px 0;
-            font-size: 14pt;
-        }
-        .nomor {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .body-text {
-            text-align: justify;
-            margin: 15px 0;
-        }
-        .indent {
-            margin-left: 40px;
-        }
-        .details {
-            margin: 20px 0 20px 40px;
-        }
-        .details-row {
-            margin: 5px 0;
-        }
-        .signature {
-            margin-top: 40px;
+
+        .right {
             text-align: right;
         }
-        .signature-space {
-            margin-top: 60px;
+
+        .subject-table {
+            width: 100%;
+            margin-top: 20px;
         }
+
+        .subject-table td {
+            vertical-align: top;
+            padding: 2px 0;
+        }
+
+        .label {
+            width: 90px;
+        }
+
+        .colon {
+            width: 10px;
+        }
+
+        .body-text {
+            margin-top: 20px;
+            text-align: justify;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
         }
-        .no-border td {
-            border: none;
-            padding: 5px 0;
-            vertical-align: top;
-        }
-        .label {
-            width: 150px;
-        }
+
         .student-table {
+            margin: 15px 0;
             border: 1px solid #000;
-            margin: 20px 0;
         }
+
         .student-table th,
         .student-table td {
             border: 1px solid #000;
-            padding: 8px;
-            text-align: left;
+            padding: 6px;
         }
-        .student-table th {
-            background-color: #f5f5f5;
+
+        .signature {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .signature .name {
+            margin-top: 70px;
             font-weight: bold;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    @php
-        $kopBase64 = null;
-        if ($withKop) {
-            $kopPath = public_path('kop.png');
-            if (file_exists($kopPath)) {
-                $kopBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($kopPath));
-            }
+
+@php
+    $kopBase64 = null;
+    if ($withKop) {
+        $path = public_path('kop.png');
+        if (file_exists($path)) {
+            $kopBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($path));
         }
-    @endphp
+    }
+@endphp
 
-    @if($kopBase64)
-    <div class="kop-surat">
-        <img src="{{ $kopBase64 }}" alt="Kop Surat">
+@if($kopBase64)
+<div class="kop-surat">
+    <img src="{{ $kopBase64 }}">
+</div>
+@endif
+
+<div class="content">
+
+    <div class="right">
+        {{ \App\Models\SystemSetting::get('district','Kabupaten Jombang') }},
+        {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
     </div>
-    @else
-    <div class="kop-surat" style="height: 120px;"></div>
-    @endif
 
-    <div class="content">
-        <div class="title">
-            SURAT IZIN MAGANG/PKL
-        </div>
+    <table class="subject-table">
+        <tr>
+            <td class="label">Nomor</td><td class="colon">:</td>
+            <td>{{ $letter->nomor_surat_permohonan }}</td>
+        </tr>
+        <tr>
+            <td>Lamp.</td><td>:</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Sifat</td><td>:</td>
+            <td>Penting</td>
+        </tr>
+        <tr>
+            <td>Hal</td><td>:</td>
+            <td><strong>Persetujuan Magang / PKL</strong></td>
+        </tr>
+    </table>
 
-        <div class="body-text">
-            <p>Yang bertanda tangan di bawah ini:</p>
-            
-            <div class="details">
-                <table class="no-border">
-                    <tr>
-                        <td class="label">Nama</td>
-                        <td>:</td>
-                        <td>Direktur PDAM Tirta Kencana</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Jabatan</td>
-                        <td>:</td>
-                        <td>Direktur Utama</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Alamat</td>
-                        <td>:</td>
-                        <td>PDAM Tirta Kencana Kabupaten Nganjuk</td>
-                    </tr>
-                </table>
-            </div>
+    <div class="body-text">
+        <p>
+            Kepada Yth.<br>
+            <strong>Yth. Sdr.  Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Jombang</strong><br>
+            di –<br>
+            <strong>JOMBANG</strong>
+        </p>
 
-            <p>Dengan ini memberikan izin kepada <strong>{{ $letter->instansi_pendidikan }}</strong> untuk melaksanakan magang/praktik kerja lapangan (PKL) dengan rincian sebagai berikut:</p>
+        <p>Dengan hormat,</p>
 
-            <div class="details">
-                <table class="no-border">
-                    <tr>
-                        <td class="label">Nomor Surat Permohonan</td>
-                        <td>:</td>
-                        <td>{{ $letter->nomor_surat_permohonan }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tanggal Mulai</td>
-                        <td>:</td>
-                        <td>{{ \Carbon\Carbon::parse($letter->tanggal_mulai)->translatedFormat('d F Y') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tanggal Selesai</td>
-                        <td>:</td>
-                        <td>{{ \Carbon\Carbon::parse($letter->tanggal_selesai)->translatedFormat('d F Y') }}</td>
-                    </tr>
-                </table>
-            </div>
+        <p>
+            Menindaklanjuti surat dari <strong>{{ $letter->instansi_pendidikan }}</strong>
+            Nomor: <strong>{{ $letter->nomor_surat_permohonan }}</strong>,
+            perihal Permohonan Izin Magang / Praktik Kerja Lapangan,
+            maka dengan ini kami memberikan izin kepada mahasiswa/i berikut:
+        </p>
 
-            <p><strong>Daftar Peserta Magang/PKL:</strong></p>
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Mahasiswa</th>
+                    <th>NIM</th>
+                    <th>Program Studi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($letter->list_mahasiswa as $i => $mhs)
+                <tr>
+                    <td>{{ $i+1 }}</td>
+                    <td>{{ $mhs['nama'] }}</td>
+                    <td>{{ $mhs['nim'] }}</td>
+                    <td>{{ $mhs['prodi'] }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-            @if($letter->list_mahasiswa && count($letter->list_mahasiswa) > 0)
-            <table class="student-table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Mahasiswa</th>
-                        <th>NIM</th>
-                        <th>Program Studi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($letter->list_mahasiswa as $index => $mahasiswa)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $mahasiswa['nama'] ?? '-' }}</td>
-                        <td>{{ $mahasiswa['nim'] ?? '-' }}</td>
-                        <td>{{ $mahasiswa['prodi'] ?? '-' }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            @endif
+        <p>
+            Untuk melaksanakan Magang / PKL di
+            <strong>Perusahaan Umum Daerah Air Minum Tirta Kencana Kabupaten Jombang</strong>
+            terhitung mulai tanggal
+            <strong>{{ \Carbon\Carbon::parse($letter->tanggal_mulai)->translatedFormat('d F Y') }}</strong>
+            sampai dengan
+            <strong>{{ \Carbon\Carbon::parse($letter->tanggal_selesai)->translatedFormat('d F Y') }}</strong>.
+        </p>
 
-            <p>Peserta magang/PKL diharapkan dapat mematuhi peraturan dan tata tertib yang berlaku di PDAM Tirta Kencana Kabupaten Nganjuk serta memberikan hasil kerja yang baik selama pelaksanaan magang.</p>
-
-            <p>Demikian surat izin magang/PKL ini kami sampaikan. Atas perhatiannya, kami ucapkan terima kasih.</p>
-        </div>
-
-        <div class="signature">
-            <p>{{ \App\Models\SystemSetting::get('district', 'Kabupaten Jombang') }}, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-            <p>Hormat Kami,</p>
-            <p><strong>{{ \App\Models\SystemSetting::get('company_line1', 'Perusahaan Umum Daerah Air Minum') }}</strong></p>
-            <p><strong>{{ \App\Models\SystemSetting::get('company_line2', 'Tirta Kencana Jombang') }}</strong></p>
-            <div class="signature-space"></div>
-            <p><strong>{{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM. S.Pd, M.Pd') }}</strong></p>
-            <p>NIP. {{ \App\Models\SystemSetting::get('director_nip', '19800815 202502 1 001') }}</p>
-            @if($letter->status === 'disetujui' && $letter->approver)
-            <hr style="margin-top: 40px; margin-bottom: 20px;">
-            <p style="font-size: 10pt; color: #666;">
-                Disetujui oleh: {{ $letter->approver->name }} <br>
-                Tanggal: {{ $letter->approved_at ? $letter->approved_at->translatedFormat('d F Y H:i') : '' }}
-            </p>
-            @endif
-        </div>
+        <p>
+            Demikian surat persetujuan ini kami sampaikan.
+            Atas perhatian dan kerja samanya diucapkan terima kasih.
+        </p>
     </div>
+
+<div style="width:100%; margin-top:50px;">
+    <div style="width:45%; margin-left:auto; text-align:center;">
+        <p>
+            <strong>Direktur</strong><br>
+            {{ \App\Models\SystemSetting::get('company_line2') }}<br>
+        </p>
+
+        <!-- Jarak tanda tangan -->
+        <div style="height:70px;"></div>
+
+        <p style="margin:0;">
+            <strong style="text-decoration:underline;">
+                {{ \App\Models\SystemSetting::get('director_name', 'KHOIRUL HASYIM. S.Pd, M.Pd') }}
+            </strong><br>
+            NIP. {{ \App\Models\SystemSetting::get('director_nip', '19800815 202502 1 001') }}
+        </p>
+    </div>
+</div>
+
+
+</div>
 </body>
 </html>

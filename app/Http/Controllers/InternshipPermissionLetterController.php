@@ -110,14 +110,27 @@ class InternshipPermissionLetterController extends Controller
         $withKop = $request->query('kop', '1') === '1';
         $paperSize = $request->query('paper', 'A4');
 
+        // Mode PDF: Generate & stream PDF menggunakan Dompdf
         if ($mode === 'pdf') {
-            return view('internship-permission-letters.pdf', [
+            $pdf = Pdf::loadView('internship-permission-letters.pdf', [
                 'letter' => $internshipPermissionLetter,
                 'withKop' => $withKop,
                 'paperSize' => $paperSize,
             ]);
+
+            // Set custom paper size untuk F4
+            if ($paperSize === 'F4') {
+                // F4: 210mm x 330mm = 595.27pt x 935.43pt
+                $pdf->setPaper([0, 0, 595.27, 935.43], 'portrait');
+            } else {
+                $pdf->setPaper($paperSize, 'portrait');
+            }
+
+            // Stream PDF inline (bukan download)
+            return $pdf->stream('internship-permission-' . date('Y-m-d') . '.pdf');
         }
 
+        // Mode page: Return preview page dengan iframe PDF
         return view('internship-permission-letters.preview', [
             'letter' => $internshipPermissionLetter,
             'internshipPermissionLetter' => $internshipPermissionLetter,
